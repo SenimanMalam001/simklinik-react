@@ -21,6 +21,9 @@ import RuanganEdit from './pages/ruangan/edit'
 import Kas from './pages/kas'
 import KasCreate from './pages/kas/create'
 import KasEdit from './pages/kas/edit'
+import Penjamin from './pages/penjamin'
+import PenjaminCreate from './pages/penjamin/create'
+import PenjaminEdit from './pages/penjamin/edit'
 
 class App extends Component {
   render() {
@@ -46,6 +49,9 @@ class App extends Component {
           <Route path="/kas" exact component={Kas} />
           <Route path="/kas/create" exact component={KasCreate} />
           <Route path="/kas/edit/:id" exact component={KasEdit} />
+          <Route path="/penjamin" exact component={Penjamin} />
+          <Route path="/penjamin/create" exact component={PenjaminCreate} />
+          <Route path="/penjamin/edit/:id" exact component={PenjaminEdit} />
         </Switch>
       </div>
     );

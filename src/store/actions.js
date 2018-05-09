@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_USERS,
   SET_KAS,
+  SET_PENJAMIN,
   SET_RUANGANS,
   ERROR,
   LOADING,
@@ -49,6 +50,34 @@ export const setUsers = (page, query) => {
   }
 }
 
+export const setPenjamin = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/penjamin?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_penjamin' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PENJAMIN,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
 export const setKas = (page, query) => {
   if (!page) {
     page = 1
