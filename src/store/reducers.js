@@ -1,5 +1,6 @@
 import {
   SET_TOKEN,
+  SET_PAGES,
   SET_USERS,
   LOADING,
   LOADING_FINISH,
@@ -10,13 +11,21 @@ const initialState = {
   token: '',
   users: [],
   loading: false,
-  error: false
+  error: false,
+  pages: 0
 }
 const reducer = (state = initialState, action) => {
   if(action.type === SET_TOKEN) {
     return {
       ...state,
       token: action.payload
+    }
+  }
+
+  if(action.type === SET_PAGES) {
+    return {
+      ...state,
+      pages: action.payload
     }
   }
 

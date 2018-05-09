@@ -1,3 +1,4 @@
+
 .App {
 }
 
@@ -28,4 +29,7 @@
 
 .container {
   margin-top: 3%;
+}
+.middle-center {
+  margin:0 auto;
 }

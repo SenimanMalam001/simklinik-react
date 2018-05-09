@@ -1,0 +1,69 @@
+import React from 'react';
+import SweetAlert from 'sweetalert2-react';
+import { Link } from 'react-router-dom'
+
+class TbodyWithAction extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      swalDelete: false,
+      id: null,
+    }
+  }
+  render() {
+    const { data, display, editUrl, deleteAction } = this.props
+    return (
+      <tbody>
+        {
+          data.length ? data.map((data, index) => {
+            return (
+              <tr key={index}>
+                {
+                  Object.keys(data).map((key) => {
+                    if (display.indexOf(key) > -1) {
+                      return (
+                        <td key={key}>{data[key]}</td>
+                      )
+                    }
+                  })
+                }
+                <td>
+                  <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
+                  <button
+                    className="btn btn-danger"
+                    onClick={ () => {
+                      this.setState({swalDelete: true, id: data.id})
+                    }}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            )
+          })
+          :
+          (<tr>
+            <td
+              colSpan={display.length + 1}
+              style={{ textAlign: 'center'}}>
+              Tidak Ditemukan Data
+            </td>
+          </tr>)
+        }
+        <SweetAlert
+          show={this.state.swalDelete}
+          type="warning"
+          title="Yakin ingin Menghapus?"
+          text="Data Yang DiHapus Tidak Akan Kembali"
+          showCancelButton
+          onConfirm={() => {
+            this.setState({ swalDelete: false })
+            deleteAction(this.state.id)
+          }}
+         />
+      </tbody>
+    )
+
+  }
+}
+export default TbodyWithAction

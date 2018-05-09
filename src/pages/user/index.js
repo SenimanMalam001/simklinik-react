@@ -1,64 +1,83 @@
 import React from 'react';
-import BreadCrumb from './BreadCrumbIndex'
+import BreadCrumb from '../../components/BreadCrumb'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setUsers } from '../../store/actions'
 import { bindActionCreators } from 'redux'
-import SweetAlert from 'sweetalert2-react';
 import axios from '../../axios'
+import Table from '../../components/TableWithAction'
+import SearchInput from '../../components/SearchInput'
+import { BarLoader } from 'react-spinners';
 
 class User extends React.Component {
   constructor() {
     super()
     this.state = {
-      swalDelete: false,
-      users: []
+      query: '',
+      isSearch: false
     }
   }
   componentDidMount() {
     this.props.setUsers()
   }
+
+  handleChange = (e) => {
+    if (e.target.value !== '') {
+      this.setState({isSearch: true})
+      this.props.setUsers(1, e.target.value)
+    } else {
+      this.setState({isSearch: false})
+      this.props.setUsers()
+    }
+    this.setState({[e.target.name]: e.target.value})
+
+  }
+
+  handlePageClick = (data) => {
+    const { selected } = data
+    this.props.setUsers(selected + 1)
+
+  }
+
   render() {
-    const { users } = this.props
+    const { users, pages, loading } = this.props
+    const { query } = this.state
     return (
       <div className="container">
-        <BreadCrumb />
-        <Link className="btn btn-primary" to="/" style={{ marginBottom: 10}} ><i class="fas fa-plus"></i> Tambah</Link>
-        <table className="table">
-          <thead className="thead-dark">
-            <tr>
-             <th scope="col">#</th>
-             <th scope="col">Username</th>
-             <th scope="col">Nama</th>
-             <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              users.map((user, index) => {
-                return (
-                  <tr>
-                    <th scope="row">{ index + 1}</th>
-                    <td>{ user.username}</td>
-                    <td>{ user.name}</td>
-                    <td>
-                      <Link className="btn btn-warning" to="/edit"> <i class="fas fa-edit"></i> </Link>
-                      <button className="btn btn-danger" onClick={ () => this.setState({swalDelete: true})} > <i class="fas fa-trash"></i> </button>
-                    </td>
-                  </tr>
-                )
-              })
+        <BreadCrumb
+          secondText="User"
+        />
+        <Link className="btn btn-primary" to="/user/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        <SearchInput
+          query={query}
+          handleChange={this.handleChange}
+        />
+        <Table
+          data={users}
+          thead={['Username','Nama','Aksi']}
+          tbody={['username','name']}
+          editUrl="/user/edit"
+          pages={pages}
+          handlePageClick={this.handlePageClick}
+          deleteAction={(id) => {
+            const token = localStorage.token
+            const headers = {
+              token,
+              otoritas: 'delete_user'
             }
-          </tbody>
-        </table>
-        <SweetAlert
-          show={this.state.swalDelete}
-          type="warning"
-          title="Yakin ingin Menghapus?"
-          text="Data Yang DiHapus Tidak Akan Kembali"
-          showCancelButton
-          onConfirm={() => this.setState({ swalDelete: false })}
-         />
+            axios.delete(`/users/${id}`, { headers }).then((res) => {
+              this.props.setUsers()
+            }).catch(err => console.log(err))
+
+          }}
+        />
+        <center>
+          <BarLoader
+            color={'#123abc'}
+            loading={loading}
+            className="middle-center"
+          />
+        </center>
       </div>
     )
   }
@@ -67,7 +86,9 @@ class User extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users
+    users: state.users,
+    pages: state.pages,
+    loading: state.loading
   }
 }
 
