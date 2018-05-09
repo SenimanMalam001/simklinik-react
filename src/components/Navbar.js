@@ -26,6 +26,7 @@ class Navbar extends Component {
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <Link className="dropdown-item" to="/user">User</Link>
+                <Link className="dropdown-item" to="/kas">Kas</Link>
                 <Link className="dropdown-item" to="/poli">Poli</Link>
                 <Link className="dropdown-item" to="/ruangan">Ruangan</Link>
                 <Link className="dropdown-item" to="/kategori-transaksi">Kategori Transaksi</Link>

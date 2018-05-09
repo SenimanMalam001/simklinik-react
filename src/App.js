@@ -18,6 +18,9 @@ import PoliEdit from './pages/poli/edit'
 import Ruangan from './pages/ruangan'
 import RuanganCreate from './pages/ruangan/create'
 import RuanganEdit from './pages/ruangan/edit'
+import Kas from './pages/kas'
+import KasCreate from './pages/kas/create'
+import KasEdit from './pages/kas/edit'
 
 class App extends Component {
   render() {
@@ -40,6 +43,9 @@ class App extends Component {
           <Route path="/ruangan" exact component={Ruangan} />
           <Route path="/ruangan/create" exact component={RuanganCreate} />
           <Route path="/ruangan/edit/:id" exact component={RuanganEdit} />
+          <Route path="/kas" exact component={Kas} />
+          <Route path="/kas/create" exact component={KasCreate} />
+          <Route path="/kas/edit/:id" exact component={KasEdit} />
         </Switch>
       </div>
     );
