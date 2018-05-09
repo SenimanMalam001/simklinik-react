@@ -6,13 +6,13 @@ import BreadCrumb from '../../components/BreadCrumb'
 import Form from './form'
 import AlertSuccess from '../../components/AlertSuccess'
 
-class UserCreate extends React.Component {
+class RuanganCreate extends React.Component {
   constructor() {
     super()
     this.state = {
-      username: '',
-      name: '',
-      password: '',
+      kode: '',
+      nama: '',
+      jumlah: '',
       error: {
         status: false,
         message: ''
@@ -22,36 +22,23 @@ class UserCreate extends React.Component {
   }
 
   handleChange = (e) => {
-    if (e.value) {
-      this.setState({role: e.value})
-    } else {
       this.setState({[e.target.name]: e.target.value})
-    }
   }
 
   validate = () => {
-    const { username, password, role, name} = this.state
-    if (!username) {
+    const { kode, jumlah, nama} = this.state
+    if (!kode) {
       this.setState({
         error: {
           status: true,
-          message: 'Username is Required'
+          message: 'Kode is Required'
         }
       })
       return false
     }
 
-    if (!password) {
-      this.setState({
-        error: {
-          status: true,
-          message: 'Password is Required'
-        }
-      })
-      return false
-    }
 
-    if (!name) {
+    if (!nama) {
       this.setState({
         error: {
           status: true,
@@ -61,30 +48,31 @@ class UserCreate extends React.Component {
       return false
     }
 
-    if (!role) {
+    if (!jumlah) {
       this.setState({
         error: {
           status: true,
-          message: 'Role is Required'
+          message: 'Jumlah is Required'
         }
       })
       return false
     }
+
     return true
   }
 
   handleSubmit = (event) => {
-    const { username, password, name, role} = this.state
+    const { kode, jumlah, nama} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
         token,
-        otoritas: 'create_user'
+        otoritas: 'create_ruangan'
       }
 
-      axios.post('/users',{username, password, name, role},{ headers }).then((res) => {
+      axios.post('/ruangan',{kode, jumlah, nama},{ headers }).then((res) => {
         this.setState({ swalSuccess: true})
-        this.props.history.push('/user')
+        this.props.history.push('/ruangan')
       }).catch((err) => {
         const message = err.response.data.message
         this.setState({
@@ -99,14 +87,14 @@ class UserCreate extends React.Component {
   }
 
   render() {
-    const { username , password, name, role,  error} = this.state
+    const { kode , jumlah, nama,   error} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
           <BreadCrumb
-            secondText="User"
-            thirdText="Tambah User"
-            secondUrl="/user"
+            secondText="Ruangan"
+            thirdText="Tambah Ruangan"
+            secondUrl="/ruangan"
           />
           {
             error.status && <Alert type="danger" text={error.message} />
@@ -114,10 +102,9 @@ class UserCreate extends React.Component {
           <Form
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
-            username={username}
-            password={password}
-            name={name}
-            role={role}
+            kode={kode}
+            jumlah={jumlah}
+            nama={nama}
           />
         </div>
         <AlertSuccess
@@ -129,4 +116,4 @@ class UserCreate extends React.Component {
   }
 }
 
-export default UserCreate
+export default RuanganCreate

@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_USERS,
+  SET_RUANGANS,
   ERROR,
   LOADING,
   LOADING_FINISH,
@@ -33,6 +34,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setRuangans = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/ruangan?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_ruangan' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_RUANGANS,
         payload: data
       })
       dispatch({

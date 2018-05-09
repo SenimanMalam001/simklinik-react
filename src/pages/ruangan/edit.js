@@ -6,14 +6,13 @@ import BreadCrumb from '../../components/BreadCrumb'
 import Form from './form'
 import AlertSuccess from '../../components/AlertSuccess'
 
-class UserCreate extends React.Component {
+class RuanganEdit extends React.Component {
   constructor() {
     super()
     this.state = {
-      username: '',
-      name: '',
-      role: '',
-      password: '',
+      kode: '',
+      nama: '',
+      jumlah: '',
       error: {
         status: false,
         message: ''
@@ -23,36 +22,23 @@ class UserCreate extends React.Component {
   }
 
   handleChange = (e) => {
-    if (e.value) {
-      this.setState({role: e.value})
-    } else {
       this.setState({[e.target.name]: e.target.value})
-    }
   }
 
   validate = () => {
-    const { username, password, role, name} = this.state
-    if (!username) {
+    const { kode, jumlah, nama} = this.state
+    if (!kode) {
       this.setState({
         error: {
           status: true,
-          message: 'Username is Required'
+          message: 'Kode is Required'
         }
       })
       return false
     }
 
-    if (!password) {
-      this.setState({
-        error: {
-          status: true,
-          message: 'Password is Required'
-        }
-      })
-      return false
-    }
 
-    if (!name) {
+    if (!nama) {
       this.setState({
         error: {
           status: true,
@@ -62,11 +48,11 @@ class UserCreate extends React.Component {
       return false
     }
 
-    if (!role) {
+    if (!jumlah) {
       this.setState({
         error: {
           status: true,
-          message: 'Role is Required'
+          message: 'Jumlah is Required'
         }
       })
       return false
@@ -75,18 +61,18 @@ class UserCreate extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { username, password, name, role} = this.state
+    const { kode, jumlah, nama} = this.state
     const { id } = this.props.match.params
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
         token,
-        otoritas: 'edit_user'
+        otoritas: 'edit_ruangan'
       }
 
-      axios.put(`/users/${id}`,{username, password, name, role},{ headers }).then((res) => {
+      axios.put(`/ruangan/${id}`,{ kode, jumlah, nama},{ headers }).then((res) => {
         this.setState({swalSuccess: true})
-        this.props.history.push('/user')
+        this.props.history.push('/ruangan')
       }).catch((err) => {
         console.log(err)
       })
@@ -99,15 +85,14 @@ class UserCreate extends React.Component {
     const token = localStorage.token
     const headers = {
       token,
-      otoritas: 'get_user'
+      otoritas: 'get_ruangan'
     }
-    axios.get(`/users/${id}`, { headers}).then((res) => {
-      const { username, password, name, role } = res.data.data
+    axios.get(`/ruangan/${id}`, { headers}).then((res) => {
+      const { kode, nama, jumlah } = res.data.data
       this.setState({
-        username,
-        password,
-        name,
-        role
+        kode,
+        nama,
+        jumlah,
       })
     }).catch((err) => {
       console.log(err);
@@ -119,15 +104,15 @@ class UserCreate extends React.Component {
   }
 
   render() {
-    const { username , password, name, role,  error} = this.state
+    const { kode, jumlah, nama, error} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
 
         <div className="col-md-4 offset-md-4">
           <BreadCrumb
-            secondText="User"
-            thirdText="Edit User"
-            secondUrl="/user"
+            secondText="Ruangan"
+            thirdText="Edit Ruangan"
+            secondUrl="/ruangan"
           />
           {
             error.status && <Alert type="danger" text={error.message} />
@@ -135,10 +120,9 @@ class UserCreate extends React.Component {
           <Form
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
-            username={username}
-            password={password}
-            name={name}
-            role={role}
+            kode={kode}
+            nama={nama}
+            jumlah={jumlah}
           />
         </div>
         <AlertSuccess
@@ -151,4 +135,4 @@ class UserCreate extends React.Component {
 
 }
 
-export default UserCreate
+export default RuanganEdit

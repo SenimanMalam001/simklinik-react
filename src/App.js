@@ -15,6 +15,9 @@ import KategoriTransaksiEdit from './pages/kategori_transaksi/edit'
 import Poli from './pages/poli'
 import PoliCreate from './pages/poli/create'
 import PoliEdit from './pages/poli/edit'
+import Ruangan from './pages/ruangan'
+import RuanganCreate from './pages/ruangan/create'
+import RuanganEdit from './pages/ruangan/edit'
 
 class App extends Component {
   render() {
@@ -34,6 +37,9 @@ class App extends Component {
           <Route path="/poli" exact component={Poli} />
           <Route path="/poli/create" exact component={PoliCreate} />
           <Route path="/poli/edit/:id" exact component={PoliEdit} />
+          <Route path="/ruangan" exact component={Ruangan} />
+          <Route path="/ruangan/create" exact component={RuanganCreate} />
+          <Route path="/ruangan/edit/:id" exact component={RuanganEdit} />
         </Switch>
       </div>
     );
