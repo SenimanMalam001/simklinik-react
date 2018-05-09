@@ -7,6 +7,9 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Logout from './pages/Logout'
 import User from './pages/user'
+import KategoriTransaksi from './pages/kategori_transaksi'
+import KategoriTransaksiCreate from './pages/kategori_transaksi/create'
+import KategoriTransaksiEdit from './pages/kategori_transaksi/edit'
 import UserCreate from './pages/user/create'
 import UserEdit from './pages/user/edit'
 
@@ -22,6 +25,9 @@ class App extends Component {
           <Route path="/user" exact component={User} />
           <Route path="/user/create" exact component={UserCreate} />
           <Route path="/user/edit/:id" exact component={UserEdit} />
+          <Route path="/kategori-transaksi" exact component={KategoriTransaksi} />
+          <Route path="/kategori-transaksi/create" exact component={KategoriTransaksiCreate} />
+          <Route path="/kategori-transaksi/edit/:id" exact component={KategoriTransaksiEdit} />
         </Switch>
       </div>
     );

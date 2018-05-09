@@ -4,12 +4,14 @@ import {
   SET_USERS,
   LOADING,
   LOADING_FINISH,
-  ERROR
+  ERROR,
+  SET_KATEGORI_TRANSAKSI
 } from './actionTypes'
 
 const initialState = {
   token: '',
   users: [],
+  kategori_transaksi: [],
   loading: false,
   error: false,
   pages: 0
@@ -33,6 +35,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       users: action.payload
+    }
+  }
+
+  if(action.type === SET_KATEGORI_TRANSAKSI) {
+    return {
+      ...state,
+      kategori_transaksi: action.payload
     }
   }
 
