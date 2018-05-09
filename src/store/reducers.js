@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_PAGES,
   SET_USERS,
+  SET_POLI,
   LOADING,
   LOADING_FINISH,
   ERROR,
@@ -11,6 +12,7 @@ import {
 const initialState = {
   token: '',
   users: [],
+  poli: [],
   kategori_transaksi: [],
   loading: false,
   error: false,
@@ -35,6 +37,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       users: action.payload
+    }
+  }
+
+  if(action.type === SET_POLI) {
+    return {
+      ...state,
+      poli: action.payload
     }
   }
 

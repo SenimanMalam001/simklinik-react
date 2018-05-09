@@ -7,11 +7,14 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Logout from './pages/Logout'
 import User from './pages/user'
+import UserCreate from './pages/user/create'
+import UserEdit from './pages/user/edit'
 import KategoriTransaksi from './pages/kategori_transaksi'
 import KategoriTransaksiCreate from './pages/kategori_transaksi/create'
 import KategoriTransaksiEdit from './pages/kategori_transaksi/edit'
-import UserCreate from './pages/user/create'
-import UserEdit from './pages/user/edit'
+import Poli from './pages/poli'
+import PoliCreate from './pages/poli/create'
+import PoliEdit from './pages/poli/edit'
 
 class App extends Component {
   render() {
@@ -28,6 +31,9 @@ class App extends Component {
           <Route path="/kategori-transaksi" exact component={KategoriTransaksi} />
           <Route path="/kategori-transaksi/create" exact component={KategoriTransaksiCreate} />
           <Route path="/kategori-transaksi/edit/:id" exact component={KategoriTransaksiEdit} />
+          <Route path="/poli" exact component={Poli} />
+          <Route path="/poli/create" exact component={PoliCreate} />
+          <Route path="/poli/edit/:id" exact component={PoliEdit} />
         </Switch>
       </div>
     );
