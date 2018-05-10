@@ -1,5 +1,6 @@
 import {
   SET_TOKEN,
+  SET_PRODUK,
   SET_USERS,
   SET_KAS,
   SET_PENJAMIN,
@@ -37,6 +38,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setProduk = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/produk?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_produk' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PRODUK,
         payload: data
       })
       dispatch({

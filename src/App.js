@@ -27,6 +27,9 @@ import PenjaminEdit from './pages/penjamin/edit'
 import Supplier from './pages/supplier'
 import SupplierCreate from './pages/supplier/create'
 import SupplierEdit from './pages/supplier/edit'
+import Produk from './pages/produk'
+import ProdukCreate from './pages/produk/create'
+import ProdukEdit from './pages/produk/edit'
 
 class App extends Component {
   render() {
@@ -58,6 +61,9 @@ class App extends Component {
           <Route path="/supplier" exact component={Supplier} />
           <Route path="/supplier/create" exact component={SupplierCreate} />
           <Route path="/supplier/edit/:id" exact component={SupplierEdit} />
+          <Route path="/produk" exact component={Produk} />
+          <Route path="/produk/create" exact component={ProdukCreate} />
+          <Route path="/produk/edit/:id" exact component={ProdukEdit} />
         </Switch>
       </div>
     );
