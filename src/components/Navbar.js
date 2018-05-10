@@ -30,6 +30,7 @@ class Navbar extends Component {
                 <Link className="dropdown-item" to="/poli">Poli</Link>
                 <Link className="dropdown-item" to="/ruangan">Ruangan</Link>
                 <Link className="dropdown-item" to="/penjamin">Penjamin</Link>
+                <Link className="dropdown-item" to="/supplier">Supplier</Link>
                 <Link className="dropdown-item" to="/kategori-transaksi">Kategori Transaksi</Link>
               </div>
             </li>

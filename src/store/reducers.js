@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PENJAMIN,
+  SET_SUPPLIER,
   SET_PAGES,
   SET_USERS,
   SET_KAS,
@@ -17,6 +18,7 @@ const initialState = {
   users: [],
   kas: [],
   penjamin: [],
+  supplier: [],
   poli: [],
   ruangan: [],
   kategori_transaksi: [],
@@ -46,6 +48,12 @@ const reducer = (state = initialState, action) => {
     }
   }
 
+  if(action.type === SET_SUPPLIER) {
+    return {
+      ...state,
+      supplier: action.payload
+    }
+  }
   if(action.type === SET_PENJAMIN) {
     return {
       ...state,
