@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PRODUK,
+  SET_KOMISI,
   SET_USERS,
   SET_KAS,
   SET_PENJAMIN,
@@ -23,6 +24,24 @@ export const setToken = (token) => {
   }
 }
 
+export const setAllUsers = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/users/all`,{ headers: { token, otoritas: 'get_user' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_USERS,
+        payload: data
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
 export const setUsers = (page, query) => {
   if (!page) {
     page = 1
@@ -38,6 +57,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setKomisi = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/komisi?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_komisi' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_KOMISI,
         payload: data
       })
       dispatch({
@@ -72,6 +120,31 @@ export const setProduk = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllProduk = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/produk/all`,{ headers: { token, otoritas: 'get_produk' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_PRODUK,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {

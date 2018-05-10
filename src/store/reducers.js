@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PRODUK,
+  SET_KOMISI,
   SET_PENJAMIN,
   SET_SUPPLIER,
   SET_PAGES,
@@ -18,6 +19,7 @@ const initialState = {
   token: '',
   users: [],
   kas: [],
+  komisi: [],
   penjamin: [],
   produk: [],
   supplier: [],
@@ -43,6 +45,12 @@ const reducer = (state = initialState, action) => {
     }
   }
 
+  if(action.type === SET_KOMISI) {
+    return {
+      ...state,
+      komisi: action.payload
+    }
+  }
   if(action.type === SET_PRODUK) {
     return {
       ...state,

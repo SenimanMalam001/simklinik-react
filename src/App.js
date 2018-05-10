@@ -30,6 +30,9 @@ import SupplierEdit from './pages/supplier/edit'
 import Produk from './pages/produk'
 import ProdukCreate from './pages/produk/create'
 import ProdukEdit from './pages/produk/edit'
+import Komisi from './pages/komisi'
+import KomisiCreate from './pages/komisi/create'
+import KomisiEdit from './pages/komisi/edit'
 
 class App extends Component {
   render() {
@@ -64,6 +67,9 @@ class App extends Component {
           <Route path="/produk" exact component={Produk} />
           <Route path="/produk/create" exact component={ProdukCreate} />
           <Route path="/produk/edit/:id" exact component={ProdukEdit} />
+          <Route path="/komisi" exact component={Komisi} />
+          <Route path="/komisi/create" exact component={KomisiCreate} />
+          <Route path="/komisi/edit/:id" exact component={KomisiEdit} />
         </Switch>
       </div>
     );
