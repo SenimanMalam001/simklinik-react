@@ -4,6 +4,7 @@ import {
   SET_KOMISI,
   SET_USERS,
   SET_KAS,
+  SET_PASIEN,
   SET_PENJAMIN,
   SET_SUPPLIER,
   SET_RUANGANS,
@@ -57,6 +58,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setPasien = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/pasien?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_pasien' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PASIEN,
         payload: data
       })
       dispatch({
@@ -211,6 +241,25 @@ export const setPenjamin = (page, query) => {
     })
   }
 }
+
+export const setAllPenjamin = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/penjamin/all`,{ headers: { token, otoritas: 'get_penjamin' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_PENJAMIN,
+        payload: data
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
 export const setKas = (page, query) => {
   if (!page) {
     page = 1
