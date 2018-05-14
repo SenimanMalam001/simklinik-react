@@ -40,6 +40,9 @@ import Registrasi from './pages/registrasi'
 import RegistrasiCreate from './pages/registrasi/create'
 import RegistrasiCreateBaru from './pages/registrasi/create_baru'
 import RegistrasiEdit from './pages/registrasi/edit'
+import ItemMasuk from './pages/itemmasuk'
+import ItemMasukCreate from './pages/itemmasuk/create'
+import ItemMasukEdit from './pages/itemmasuk/edit'
 
 class App extends Component {
   render() {
@@ -84,6 +87,9 @@ class App extends Component {
           <Route path="/registrasi/create" exact component={RegistrasiCreate} />
           <Route path="/registrasi/create/baru" exact component={RegistrasiCreateBaru} />
           <Route path="/registrasi/edit/:id" exact component={RegistrasiEdit} />
+          <Route path="/item-masuk" exact component={ItemMasuk} />
+          <Route path="/item-masuk/create" exact component={ItemMasukCreate} />
+          <Route path="/item-masuk/edit/:id" exact component={ItemMasukEdit} />
         </Switch>
       </div>
     );
