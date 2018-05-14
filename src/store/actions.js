@@ -3,6 +3,7 @@ import {
   SET_PRODUK,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
+  SET_ITEM_KELUAR,
   SET_PASIEN_REGISTRASI,
   SET_KOMISI,
   SET_USERS,
@@ -97,6 +98,35 @@ export const setItemMasuk = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_ITEM_MASUK,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setItemKeluar = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/item-keluar?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_item_keluar' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_ITEM_KELUAR,
         payload: data
       })
       dispatch({

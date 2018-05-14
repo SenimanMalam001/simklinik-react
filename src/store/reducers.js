@@ -3,6 +3,7 @@ import {
   SET_PRODUK,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
+  SET_ITEM_KELUAR,
   SET_PASIEN_REGISTRASI,
   SET_KOMISI,
   SET_PASIEN,
@@ -25,6 +26,7 @@ const initialState = {
   kas: [],
   komisi: [],
   item_masuks: [],
+  item_keluars: [],
   pasien: [],
   pasien_registrasi: '',
   penjamin: [],
@@ -71,6 +73,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       item_masuks: action.payload
+    }
+  }
+
+  if(action.type === SET_ITEM_KELUAR) {
+    return {
+      ...state,
+      item_keluars: action.payload
     }
   }
 
