@@ -9,7 +9,7 @@ class TableWithAction extends React.Component {
     super()
   }
   render() {
-    const { handlePageClick, data, thead, tbody, editUrl, deleteAction, pages } = this.props
+    const { actionNotDisplay, handlePageClick, data, thead, tbody, editUrl, deleteAction, pages } = this.props
     return (
       <div className="table-responsive">
         <table className="table">
@@ -21,6 +21,7 @@ class TableWithAction extends React.Component {
             display={tbody}
             editUrl={editUrl}
             deleteAction={deleteAction}
+            actionNotDisplay={actionNotDisplay}
           />
         </table>
         <Pagination

@@ -1,6 +1,8 @@
 import {
   SET_TOKEN,
   SET_PRODUK,
+  SET_REGISTRASI,
+  SET_PASIEN_REGISTRASI,
   SET_KOMISI,
   SET_USERS,
   SET_KAS,
@@ -22,6 +24,13 @@ export const setToken = (token) => {
   return {
     type: SET_TOKEN,
     payload: token
+  }
+}
+
+export const setPasienRegistrasi = (pasien) => {
+  return {
+    type: SET_PASIEN_REGISTRASI,
+    payload: pasien
   }
 }
 
@@ -72,6 +81,35 @@ export const setUsers = (page, query) => {
   }
 }
 
+export const setRegistrasi = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/registrasi?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_registrasi' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_REGISTRASI,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
 export const setPasien = (page, query) => {
   if (!page) {
     page = 1
@@ -92,6 +130,24 @@ export const setPasien = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllPasien = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/pasien/all`,{ headers: { token, otoritas: 'get_pasien' }}).then((res) => {
+      const { data} = res.data
+      dispatch({
+        type: SET_PASIEN,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {
@@ -309,6 +365,24 @@ export const setRuangans = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllRuangans = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/ruangan/all`,{ headers: { token, otoritas: 'get_ruangan' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_RUANGANS,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {

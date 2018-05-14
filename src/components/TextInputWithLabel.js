@@ -2,7 +2,7 @@ import React from 'react';
 import TextInput from './TextInput'
 
 const TextInputWithLabel = (props) => {
-  const { value, handleChange, name, placeholder,type, label } = props
+  const { value, handleChange, name, placeholder,type, label, readOnly } = props
 
   return (
     <div className="form-group">
@@ -13,6 +13,7 @@ const TextInputWithLabel = (props) => {
         placeholder={placeholder}
         type={type}
         handleChange={handleChange}
+        readOnly={readOnly}
       />
     </div>
   )

@@ -12,6 +12,7 @@ class TbodyWithAction extends React.Component {
   }
   render() {
     const { data, display, editUrl, deleteAction } = this.props
+    let { actionNotDisplay } = this.props
     return (
       <tbody>
         {
@@ -27,17 +28,22 @@ class TbodyWithAction extends React.Component {
                     }
                   })
                 }
-                <td>
-                  <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
-                  <button
-                    className="btn btn-danger"
-                    onClick={ () => {
-                      this.setState({swalDelete: true, id: data.id})
-                    }}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </td>
+                {
+                  !actionNotDisplay && (
+                    <td>
+                      <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
+                      <button
+                        className="btn btn-danger"
+                        onClick={ () => {
+                          this.setState({swalDelete: true, id: data.id})
+                        }}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  )
+                }
+
               </tr>
             )
           })
