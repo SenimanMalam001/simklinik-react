@@ -50,7 +50,7 @@ class StokAwalEdit extends React.Component {
     return true
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = (event) =>   {
     const { jumlah, produk, keterangan} = this.state
     const { id } = this.props.match.params
     if (this.validate()) {

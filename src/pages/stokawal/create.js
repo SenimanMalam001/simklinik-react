@@ -15,6 +15,7 @@ class StokAwalCreate extends React.Component {
     this.state = {
       jumlah: '',
       produk: '',
+      importExcell: false,
       error: {
         status: false,
         message: ''
@@ -79,12 +80,35 @@ class StokAwalCreate extends React.Component {
     event.preventDefault()
   }
 
+  handleSubmitImport = (event) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'create_stok_awal',
+      'content-type': 'multipart/form-data'
+    }
+    var data = new FormData();
+    data.append('file', document.getElementById('file').files[0]);
+    axios.post('/stok-awal',data,{ headers }).then((res) => { this.setState({ swalSuccess: true})
+      this.props.history.push('/stok-awal')
+    }).catch((err) => {
+      const message = err.response.data.message
+      this.setState({
+        error: {
+          status: true,
+          message: message
+        }
+      })
+    })
+    event.preventDefault()
+  }
+
   componentDidMount() {
     this.props.setAllProduk()
   }
 
   render() {
-    const { jumlah, produk, error} = this.state
+    const { jumlah, produk, error, importExcell} = this.state
     const { users, produks} = this.props
     return (
       <div className="container" style={{ marginTop: '20px'}}>
@@ -97,13 +121,49 @@ class StokAwalCreate extends React.Component {
           {
             error.status && <Alert type="danger" text={error.message} />
           }
-          <Form
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
-            jumlah={jumlah}
-            produk={produk}
-            produks={produks}
-          />
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <a className={ !importExcell ? `nav-link active`: 'nav-link'} onClick={ ()=> this.setState({ importExcell: false})} href="#">Form</a>
+            </li>
+            <li className="nav-item">
+              <a className={ importExcell ? `nav-link active`: 'nav-link'} onClick={ ()=> this.setState({ importExcell: true})} href="#">Import</a>
+            </li>
+          </ul>
+          <br/>
+
+          { !importExcell ? (
+              <Form
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                jumlah={jumlah}
+                produk={produk}
+                produks={produks}
+              />
+            )
+            : (
+              <div>
+                <form onSubmit={ this.handleSubmitImport}>
+                  <div className="form-group">
+                    <input type="file" className="form-control" id="file"/>
+                    <span>*Hanya Menerima File Excell</span>
+                  </div>
+                  <button type="submit" className="btn btn-primary">Submit</button>
+                </form>
+                <br/>
+                <p>Contoh Format File Excell yang di Import</p>
+                <table className="table table-bordered">
+                  <tr>
+                    <td>OB1(kode produk)</td>
+                    <td>12(jumlah stok awal)</td>
+                  </tr>
+                  <tr>
+                    <td>OB2(kode produk)</td>
+                    <td>10(jumlah stok awal)</td>
+                  </tr>
+                </table>
+              </div>
+            )
+          }
         </div>
         <AlertSuccess
           type="create"
