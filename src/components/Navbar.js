@@ -31,6 +31,7 @@ class Navbar extends Component {
                 <Link className="dropdown-item" to="/pembelian">Pembelian</Link>
                 <Link className="dropdown-item" to="/item-masuk">Item Masuk</Link>
                 <Link className="dropdown-item" to="/item-keluar">Item Keluar</Link>
+                <Link className="dropdown-item" to="/stok-awal">Stok Awal</Link>
               </div>
             </li>
             <li className="nav-item dropdown">
