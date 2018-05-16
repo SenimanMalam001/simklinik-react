@@ -345,7 +345,7 @@ export const setAllProduk = (page, query) => {
   return dispatch => {
     const token = localStorage.token
     dispatch(loading)
-    axios.get(`/produk/all`,{ headers: { token, otoritas: 'get_produk' }}).then((res) => {
+    axios.get(`/produk/all`,{ headers: { token, otoritas: 'get_produk', redis_key:'Produk' }}).then((res) => {
       const { data } = res.data
       dispatch({
         type: SET_PRODUK,

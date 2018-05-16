@@ -94,7 +94,7 @@ class StokOpname extends React.Component {
         />
         <Table
           data={stok_opnames}
-          thead={['No Trans','Produk','Stok Komputer','Stok Akhir','Selisih','Nilai','Aksi']}
+          thead={['No Trans','Produk','Stok Akhir','Stok Komputer','Selisih','Nilai','Aksi']}
           tbody={['no_trans','produk','stok_komputer','stok_akhir','selisih','nilai_selisih']}
           editUrl="/stok-opname/edit"
           pages={pages}
