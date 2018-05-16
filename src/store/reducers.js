@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_PRODUK,
   SET_STOK_AWAL,
+  SET_STOK_OPNAME,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
   SET_ITEM_KELUAR,
@@ -29,6 +30,7 @@ const initialState = {
   item_masuks: [],
   item_keluars: [],
   stok_awals: [],
+  stok_opnames: [],
   pasien: [],
   pasien_registrasi: '',
   penjamin: [],
@@ -75,6 +77,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       stok_awals: action.payload
+    }
+  }
+
+  if(action.type === SET_STOK_OPNAME) {
+    return {
+      ...state,
+      stok_opnames: action.payload
     }
   }
 

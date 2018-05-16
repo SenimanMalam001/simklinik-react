@@ -5924,7 +5924,14 @@ react-swal@^3.0.0:
     prop-types "^15.6.0"
     sweetalert "^1.0.1"
 
-react@^16.3.2:
+react-to-print@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-1.0.16.tgz#ac78bca30884ac47b66ad5cb83f1e03c8a82cf05"
+  dependencies:
+    prop-types "^15.6.0"
+    react "^16.2.0"
+
+react@^16.2.0, react@^16.3.2:
   version "16.3.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.3.2.tgz#fdc8420398533a1e58872f59091b272ce2f91ea9"
   dependencies:

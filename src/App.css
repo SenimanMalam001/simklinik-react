@@ -33,3 +33,17 @@
 .middle-center {
   margin:0 auto;
 }
+
+button {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+a {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  z-index: 0;
+}
+.page-item.active .page-link {
+
+  z-index: 0;
+}

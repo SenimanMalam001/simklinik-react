@@ -49,6 +49,9 @@ import ItemKeluarEdit from './pages/itemkeluar/edit'
 import StokAwal from './pages/stokawal'
 import StokAwalCreate from './pages/stokawal/create'
 import StokAwalEdit from './pages/stokawal/edit'
+import StokOpname from './pages/stokopname'
+import StokOpnameCreate from './pages/stokopname/create'
+import StokOpnameEdit from './pages/stokopname/edit'
 
 class App extends Component {
   render() {
@@ -102,6 +105,9 @@ class App extends Component {
           <Route path="/stok-awal" exact component={StokAwal} />
           <Route path="/stok-awal/create" exact component={StokAwalCreate} />
           <Route path="/stok-awal/edit/:id" exact component={StokAwalEdit} />
+          <Route path="/stok-opname" exact component={StokOpname} />
+          <Route path="/stok-opname/create" exact component={StokOpnameCreate} />
+          <Route path="/stok-opname/edit/:id" exact component={StokOpnameEdit} />
         </Switch>
       </div>
     );

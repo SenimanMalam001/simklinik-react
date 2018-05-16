@@ -9,7 +9,17 @@ class TableWithAction extends React.Component {
     super()
   }
   render() {
-    const { actionNotDisplay, handlePageClick, data, thead, tbody, editUrl, deleteAction, pages } = this.props
+    const {
+      withoutPagination,
+      actionNotDisplay,
+      handlePageClick,
+      data,
+      thead,
+      tbody,
+      editUrl,
+      deleteAction,
+      pages
+    } = this.props
     return (
       <div className="table-responsive">
         <table className="table">
@@ -24,10 +34,14 @@ class TableWithAction extends React.Component {
             actionNotDisplay={actionNotDisplay}
           />
         </table>
-        <Pagination
-          pages={pages}
-          handlePageClick={handlePageClick}
-        />
+        {
+          !withoutPagination && (
+            <Pagination
+              pages={pages}
+              handlePageClick={handlePageClick}
+            />
+          )
+        }
       </div>
     )
   }

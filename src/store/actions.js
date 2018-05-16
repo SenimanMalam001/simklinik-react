@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_PRODUK,
   SET_STOK_AWAL,
+  SET_STOK_OPNAME,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
   SET_ITEM_KELUAR,
@@ -84,6 +85,34 @@ export const setUsers = (page, query) => {
   }
 }
 
+export const setStokOpname = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/stok-opname?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_stok_opname' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_STOK_OPNAME,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
 export const setStokAwal = (page, query) => {
   if (!page) {
     page = 1
