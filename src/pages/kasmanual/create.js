@@ -7,17 +7,17 @@ import Form from './form'
 import AlertSuccess from '../../components/AlertSuccess'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setAllProduk } from '../../store/actions'
+import { setAllKas, setAllKategoriTransaksi } from '../../store/actions'
 
-class ItemMasukEdit extends React.Component {
+class KasManualCreate extends React.Component {
   constructor() {
     super()
     this.state = {
       jumlah: '',
-      produk: '',
-      keterangan: '',
-      jenis: '',
+      kas: '',
       kategori: '',
+      jenis: '',
+      keterangan: '',
       error: {
         status: false,
         message: ''
@@ -26,47 +26,66 @@ class ItemMasukEdit extends React.Component {
     }
   }
 
+
   handleChange = (e) => {
       this.setState({[e.target.name]: e.target.value})
   }
 
   validate = () => {
-    const { jumlah, produk} = this.state
+    const { jumlah, kas, jenis, kategori} = this.state
+    if (!kas) {
+      this.setState({
+        error: {
+          status: true,
+          message: 'Kas is Required'
+        }
+      })
+      return false
+    }
+    if (!kategori) {
+      this.setState({
+        error: {
+          status: true,
+          message: 'Kategori is Required'
+        }
+      })
+      return false
+    }
+    if (!jenis) {
+      this.setState({
+        error: {
+          status: true,
+          message: 'Jenis Transaksi is Required'
+        }
+      })
+      return false
+    }
     if (!jumlah) {
       this.setState({
         error: {
           status: true,
-          message: 'User is Required'
+          message: 'Jumlah is Required'
         }
       })
       return false
     }
-    if (!produk) {
-      this.setState({
-        error: {
-          status: true,
-          message: 'Produk is Required'
-        }
-      })
-      return false
-    }
+
     return true
   }
 
   handleSubmit = (event) => {
-    const { jumlah, produk, keterangan} = this.state
-    const { id } = this.props.match.params
+    const { jumlah, kas, keterangan, jenis, kategori} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
         token,
-        otoritas: 'edit_item_masuk'
+        otoritas: 'create_kas_manual'
       }
-      axios.put(`/item-masuk/${id}`,{ jumlah, produk, keterangan},{ headers }).then((res) => {
-        this.setState({swalSuccess: true})
-        this.props.history.push('/item-masuk')
+
+      axios.post('/kas-manual',{jumlah, kas, keterangan, jenis, kategori},{ headers }).then((res) => {
+        this.setState({ swalSuccess: true})
+        this.props.history.push('/kas-manual')
       }).catch((err) => {
-        console.log(err)
         const message = err.response.data.message
         this.setState({
           error: {
@@ -79,41 +98,21 @@ class ItemMasukEdit extends React.Component {
     event.preventDefault()
   }
 
-  getData = () => {
-    const { id } = this.props.match.params
-    const token = localStorage.token
-    const headers = {
-      token,
-      otoritas: 'get_item_masuk'
-    }
-    axios.get(`/item-masuk/${id}`, { headers}).then((res) => {
-      const { jumlah, produk, keterangan } = res.data.data
-      this.setState({
-        jumlah,
-        produk,
-        keterangan
-      })
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
-
   componentDidMount() {
-    this.getData()
-    this.props.setAllProduk()
+    this.props.setAllKas()
+    this.props.setAllKategoriTransaksi()
   }
 
   render() {
-    const { jumlah, produk, error} = this.state
-    const { produks} = this.props
+    const { jumlah, kas, keterangan, jenis, kategori, error} = this.state
+    const {  kass, kategori_transaksis} = this.props
     return (
       <div className="container" style={{ marginTop: '20px'}}>
-
         <div className="col-md-4 offset-md-4">
           <BreadCrumb
-            secondText="Item Masuk"
-            thirdText="Edit"
-            secondUrl="/item-masuk"
+            secondText="Kas Manual"
+            thirdText="Tambah"
+            secondUrl="/kas-manual"
           />
           {
             error.status && <Alert type="danger" text={error.message} />
@@ -121,28 +120,36 @@ class ItemMasukEdit extends React.Component {
           <Form
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
+            keterangan={keterangan}
             jumlah={jumlah}
-            produk={produk}
-            produks={produks}
-
+            kas={kas}
+            kategori={kategori}
+            jenis={jenis}
+            kass={kass}
+            kategori_transaksis={kategori_transaksis}
           />
         </div>
         <AlertSuccess
-          type="edit"
+          type="create"
           status={this.state.swalSuccess}
         />
       </div>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {
   return {
-    produks: state.produk
+    kass: state.kas,
+    kategori_transaksis: state.kategori_transaksi
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ setAllProduk }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setAllKas,
+    setAllKategoriTransaksi
+  },
+  dispatch
+)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemMasukEdit)
+export default connect(mapStateToProps, mapDispatchToProps)(KasManualCreate)

@@ -52,6 +52,9 @@ import StokAwalEdit from './pages/stokawal/edit'
 import StokOpname from './pages/stokopname'
 import StokOpnameCreate from './pages/stokopname/create'
 import StokOpnameEdit from './pages/stokopname/edit'
+import KasManual from './pages/kasmanual'
+import KasManualCreate from './pages/kasmanual/create'
+import KasManualEdit from './pages/kasmanual/edit'
 
 class App extends Component {
   render() {
@@ -108,6 +111,9 @@ class App extends Component {
           <Route path="/stok-opname" exact component={StokOpname} />
           <Route path="/stok-opname/create" exact component={StokOpnameCreate} />
           <Route path="/stok-opname/edit/:id" exact component={StokOpnameEdit} />
+          <Route path="/kas-manual" exact component={KasManual} />
+          <Route path="/kas-manual/create" exact component={KasManualCreate} />
+          <Route path="/kas-manual/edit/:id" exact component={KasManualEdit} />
         </Switch>
       </div>
     );

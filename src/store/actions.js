@@ -2,6 +2,7 @@ import {
   SET_TOKEN,
   SET_PRODUK,
   SET_STOK_AWAL,
+  SET_KAS_MANUAL,
   SET_STOK_OPNAME,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
@@ -186,6 +187,35 @@ export const setItemKeluar = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_ITEM_KELUAR,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setKasManual = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/kas-manual?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_kas_manual' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_KAS_MANUAL,
         payload: data
       })
       dispatch({
@@ -463,6 +493,23 @@ export const setKas = (page, query) => {
     })
   }
 }
+export const setAllKas = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/kas/all`,{ headers: { token, otoritas: 'get_kas' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_KAS,
+        payload: data
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
 
 export const setRuangans = (page, query) => {
   if (!page) {
@@ -559,6 +606,24 @@ export const setKategoriTransaksi = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllKategoriTransaksi = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/kategori-transaksi/all`,{ headers: { token, otoritas: 'get_kategori_transaksi' }}).then((res) => {
+      const { data, pages } = res.data
+      dispatch({
+        type: SET_KATEGORI_TRANSAKSI,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {
