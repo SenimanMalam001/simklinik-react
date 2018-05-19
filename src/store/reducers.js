@@ -3,6 +3,7 @@ import {
   SET_PRODUK,
   SET_STOK_AWAL,
   SET_KAS_MANUAL,
+  SET_KAS_MUTASI,
   SET_STOK_OPNAME,
   SET_REGISTRASI,
   SET_ITEM_MASUK,
@@ -28,6 +29,7 @@ const initialState = {
   users: [],
   kas: [],
   kas_manuals: [],
+  kas_mutasis: [],
   komisi: [],
   item_masuks: [],
   item_keluars: [],
@@ -79,6 +81,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       kas_manuals: action.payload
+    }
+  }
+  if(action.type === SET_KAS_MUTASI) {
+    return {
+      ...state,
+      kas_mutasis: action.payload
     }
   }
   if(action.type === SET_STOK_AWAL) {
