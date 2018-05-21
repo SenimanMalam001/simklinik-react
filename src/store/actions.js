@@ -2,6 +2,8 @@ import {
   SET_TOKEN,
   SET_PRODUK,
   SET_STOK_AWAL,
+  SET_PEMBELIAN,
+  SET_TBS_PEMBELIAN,
   SET_KAS_MANUAL,
   SET_KAS_MUTASI,
   SET_STOK_OPNAME,
@@ -73,6 +75,64 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setPembelian = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/pembelian?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_pembelian' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PEMBELIAN,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setTbsPembelian = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/tbs-pembelian?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_pembelian' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_TBS_PEMBELIAN,
         payload: data
       })
       dispatch({
@@ -439,6 +499,24 @@ export const setSupplier = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllSupplier = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/supplier/all`,{ headers: { token, otoritas: 'get_supplier' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_SUPPLIER,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {

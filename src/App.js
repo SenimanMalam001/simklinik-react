@@ -58,6 +58,9 @@ import KasManualEdit from './pages/kasmanual/edit'
 import KasMutasi from './pages/kasmutasi'
 import KasMutasiCreate from './pages/kasmutasi/create'
 import KasMutasiEdit from './pages/kasmutasi/edit'
+import Pembelian from './pages/pembelian'
+import PembelianCreate from './pages/pembelian/create'
+import PembelianEdit from './pages/pembelian/edit'
 
 class App extends Component {
   render() {
@@ -120,6 +123,9 @@ class App extends Component {
           <Route path="/kas-mutasi" exact component={KasMutasi} />
           <Route path="/kas-mutasi/create" exact component={KasMutasiCreate} />
           <Route path="/kas-mutasi/edit/:id" exact component={KasMutasiEdit} />
+          <Route path="/pembelian" exact component={Pembelian} />
+          <Route path="/pembelian/create" exact component={PembelianCreate} />
+          <Route path="/pembelian/edit/:id" exact component={PembelianEdit} />
         </Switch>
       </div>
     );
