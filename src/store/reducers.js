@@ -4,6 +4,8 @@ import {
   SET_STOK_AWAL,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
+  SET_PENJUALAN,
+  SET_TBS_PENJUALAN,
   SET_KAS_MANUAL,
   SET_KAS_MUTASI,
   SET_STOK_OPNAME,
@@ -33,6 +35,8 @@ const initialState = {
   kas_manuals: [],
   pembelians: [],
   tbs_pembelians: [],
+  penjualans: [],
+  tbs_penjualans: [],
   kas_mutasis: [],
   komisi: [],
   item_masuks: [],
@@ -72,11 +76,25 @@ const reducer = (state = initialState, action) => {
       pembelians: action.payload
     }
   }
-  
+
   if(action.type === SET_TBS_PEMBELIAN) {
     return {
       ...state,
       tbs_pembelians: action.payload
+    }
+  }
+
+  if(action.type === SET_PENJUALAN) {
+    return {
+      ...state,
+      penjualans: action.payload
+    }
+  }
+
+  if(action.type === SET_TBS_PENJUALAN) {
+    return {
+      ...state,
+      tbs_penjualans: action.payload
     }
   }
   if(action.type === SET_PASIEN_REGISTRASI) {

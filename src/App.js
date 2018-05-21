@@ -61,6 +61,9 @@ import KasMutasiEdit from './pages/kasmutasi/edit'
 import Pembelian from './pages/pembelian'
 import PembelianCreate from './pages/pembelian/create'
 import PembelianEdit from './pages/pembelian/edit'
+import Penjualan from './pages/penjualan'
+import PenjualanCreate from './pages/penjualan/create'
+import PenjualanEdit from './pages/penjualan/edit'
 
 class App extends Component {
   render() {
@@ -126,6 +129,9 @@ class App extends Component {
           <Route path="/pembelian" exact component={Pembelian} />
           <Route path="/pembelian/create" exact component={PembelianCreate} />
           <Route path="/pembelian/edit/:id" exact component={PembelianEdit} />
+          <Route path="/penjualan" exact component={Penjualan} />
+          <Route path="/penjualan/create" exact component={PenjualanCreate} />
+          <Route path="/penjualan/edit/:id" exact component={PenjualanEdit} />
         </Switch>
       </div>
     );

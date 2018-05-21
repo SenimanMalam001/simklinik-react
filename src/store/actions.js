@@ -4,6 +4,8 @@ import {
   SET_STOK_AWAL,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
+  SET_PENJUALAN,
+  SET_TBS_PENJUALAN,
   SET_KAS_MANUAL,
   SET_KAS_MUTASI,
   SET_STOK_OPNAME,
@@ -118,6 +120,35 @@ export const setPembelian = (page, query) => {
   }
 }
 
+export const setPenjualan = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/penjualan?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_penjualan' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PENJUALAN,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
 export const setTbsPembelian = (page, query) => {
   if (!page) {
     page = 1
@@ -133,6 +164,35 @@ export const setTbsPembelian = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_TBS_PEMBELIAN,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setTbsPenjualan = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/tbs-penjualan?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_penjualan' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_TBS_PENJUALAN,
         payload: data
       })
       dispatch({
@@ -436,7 +496,7 @@ export const setProduk = (page, query) => {
   return dispatch => {
     const token = localStorage.token
     dispatch(loading)
-    axios.get(`/produk?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_produk' }}).then((res) => {
+    axios.get(`/produk?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_produk', redis_key: 'Produk' }}).then((res) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_PRODUK,

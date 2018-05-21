@@ -14,6 +14,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-select": "^1.2.1",
+    "react-shortcut": "^1.0.6",
     "react-spinners": "^0.3.2",
     "react-swal": "^3.0.0",
     "react-to-print": "^1.0.16",

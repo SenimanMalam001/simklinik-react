@@ -1,6 +1,7 @@
 import React from 'react';
 import SweetAlert from 'sweetalert2-react';
 import { Link } from 'react-router-dom'
+import Currency from 'react-currency-format';
 
 class TbodyWithAction extends React.Component {
   constructor() {
@@ -23,7 +24,13 @@ class TbodyWithAction extends React.Component {
                   Object.keys(data).map((key) => {
                     if (display.indexOf(key) > -1) {
                       return (
-                        <td key={key}>{data[key]}</td>
+                        <td key={key}>{!isNaN(data[key]) ? (
+                          <Currency
+                            value={data[key]}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                           />
+                       ): data[key] }</td>
                       )
                     }
                   })
