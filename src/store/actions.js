@@ -1,5 +1,6 @@
 import {
   SET_TOKEN,
+  SET_PETUGAS,
   SET_PRODUK,
   SET_STOK_AWAL,
   SET_PEMBELIAN,
@@ -77,6 +78,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setPetugas = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/petugas?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_petugas' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PETUGAS,
         payload: data
       })
       dispatch({
@@ -400,6 +430,24 @@ export const setRegistrasi = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllRegistrasi = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/registrasi/all`,{ headers: { token, otoritas: 'get_registrasi' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_REGISTRASI,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {
