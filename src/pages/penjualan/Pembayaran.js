@@ -40,6 +40,7 @@ class Pembayaran extends React.Component {
       diskon: 0,
       cara_bayar: '',
       jumlah_bayar: 0,
+      kembalian: 0,
       jumlah_kredit: 0,
       penjamin: '',
       status_jual: '',
@@ -135,6 +136,10 @@ class Pembayaran extends React.Component {
       const { PetugasPenjualans } = res.data.data
       const petugas = PetugasPenjualans.map(petugas =>  petugas.user)
       penjualan.petugas = petugas
+      penjualan.kembalian = penjualan.jumlah_bayar - penjualan.total_akhir
+      if (penjualan.kembalian < 0 ) {
+        penjualan.kembalian = 0
+      }
       this.setState(penjualan)
       this.props.setTbsPenjualan()
     }).catch((err) => {
@@ -178,7 +183,7 @@ class Pembayaran extends React.Component {
     }
   }
   render() {
-    const {  no_reg, petugas, total_akhir, jumlah_bayar, diskon, cara_bayar, penjamin } = this.state
+    const {  no_reg, petugas, total_akhir, jumlah_bayar, kembalian, diskon, cara_bayar, penjamin } = this.state
     let { kass, penjamins, users, registrasi } = this.props
     kass = kass.map(kas => {
       return {
@@ -259,8 +264,22 @@ class Pembayaran extends React.Component {
               prefix={'Rp.'}
               onValueChange={(values) => {
               const {formattedValue, value} = values;
-              this.setState({jumlah_bayar: value})
+              let kembalian =  value - total_akhir
+              if (kembalian < 0 ) {
+                kembalian = 0
+              }
+              this.setState({jumlah_bayar: value, kembalian})
             }}/>
+          </div>
+          <div className="form-group">
+            <label>Kembalian </label>
+            <h3>
+            <Currency
+              value={kembalian}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={'Rp.'}
+            /></h3>
           </div>
           <div className="form-group">
             <label>Penjamin </label>
