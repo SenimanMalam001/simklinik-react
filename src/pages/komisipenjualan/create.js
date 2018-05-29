@@ -9,11 +9,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { setAllUsers, setAllProduk } from '../../store/actions'
 
-class KomisiCreate extends React.Component {
+class KomisiPenjualanCreate extends React.Component {
   constructor() {
     super()
     this.state = {
       user: '',
+      no_trans: '',
       produk: '',
       jumlah: '',
       error: {
@@ -30,7 +31,16 @@ class KomisiCreate extends React.Component {
   }
 
   validate = () => {
-    const { user, produk, jumlah} = this.state
+    const { no_trans, user, produk, jumlah} = this.state
+    if (!no_trans) {
+      this.setState({
+        error: {
+          status: true,
+          message: 'No Trans is Required'
+        }
+      })
+      return false
+    }
     if (!user) {
       this.setState({
         error: {
@@ -40,7 +50,6 @@ class KomisiCreate extends React.Component {
       })
       return false
     }
-
 
     if (!produk) {
       this.setState({
@@ -66,17 +75,17 @@ class KomisiCreate extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { user, produk, jumlah} = this.state
+    const { user, produk, jumlah, no_trans} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
         token,
-        otoritas: 'create_komisi'
+        otoritas: 'create_komisi_penjualan'
       }
 
-      axios.post('/komisi',{user, produk, jumlah},{ headers }).then((res) => {
+      axios.post('/komisipenjualan',{user, produk, jumlah, no_trans},{ headers }).then((res) => {
         this.setState({ swalSuccess: true})
-        this.props.history.push('/komisi')
+        this.props.history.push('/komisipenjualan')
       }).catch((err) => {
         const message = err.response.data.message
         this.setState({
@@ -96,15 +105,15 @@ class KomisiCreate extends React.Component {
   }
 
   render() {
-    const { user, produk, jumlah, error} = this.state
+    const { no_trans, user, produk, jumlah, error} = this.state
     const { users, produks} = this.props
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
           <BreadCrumb
-            secondText="Komisi"
-            thirdText="Tambah Komisi"
-            secondUrl="/komisi"
+            secondText="Komisi Penjualan"
+            thirdText="Tambah "
+            secondUrl="/komisipenjualan"
           />
           {
             error.status && <Alert type="danger" text={error.message} />
@@ -113,6 +122,7 @@ class KomisiCreate extends React.Component {
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             user={user}
+            no_trans={no_trans}
             produk={produk}
             jumlah={jumlah}
             users={users}
@@ -137,4 +147,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({ setAllProduk, setAllUsers}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(KomisiCreate)
+export default connect(mapStateToProps, mapDispatchToProps)(KomisiPenjualanCreate)

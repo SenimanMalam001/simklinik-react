@@ -15,6 +15,7 @@ import {
   SET_ITEM_KELUAR,
   SET_PASIEN_REGISTRASI,
   SET_KOMISI,
+  SET_KOMISI_PENJUALAN,
   SET_USERS,
   SET_KAS,
   SET_PASIEN,
@@ -112,6 +113,24 @@ export const setPetugas = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setAllPetugas = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/petugas/all`,{ headers: { token, otoritas: 'get_petugas' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_PETUGAS,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {
@@ -457,6 +476,13 @@ export const setAllRegistrasi = () => {
   }
 }
 
+export const  setClearRegistrasi = () => {
+  return {
+    type: SET_REGISTRASI,
+    payload: []
+  }
+}
+
 export const setPasien = (page, query) => {
   if (!page) {
     page = 1
@@ -519,6 +545,35 @@ export const setKomisi = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_KOMISI,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setKomisiPenjualan = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/komisipenjualan?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_komisi_penjualan' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_KOMISI_PENJUALAN,
         payload: data
       })
       dispatch({

@@ -9,13 +9,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { setAllUsers, setAllProduk } from '../../store/actions'
 
-class KomisiCreate extends React.Component {
+class KomisiEdit extends React.Component {
   constructor() {
     super()
     this.state = {
       user: '',
       produk: '',
-      jumlah: '',
       error: {
         status: false,
         message: ''
@@ -24,13 +23,12 @@ class KomisiCreate extends React.Component {
     }
   }
 
-
   handleChange = (e) => {
-      this.setState({[e.target.name]: e.target.value})
+      this.setState({[e.name]: e.value})
   }
 
   validate = () => {
-    const { user, produk, jumlah} = this.state
+    const { user, produk} = this.state
     if (!user) {
       this.setState({
         error: {
@@ -40,8 +38,6 @@ class KomisiCreate extends React.Component {
       })
       return false
     }
-
-
     if (!produk) {
       this.setState({
         error: {
@@ -51,59 +47,62 @@ class KomisiCreate extends React.Component {
       })
       return false
     }
-
-    if (!jumlah) {
-      this.setState({
-        error: {
-          status: true,
-          message: 'Jumlah is Required'
-        }
-      })
-      return false
-    }
-
     return true
   }
 
   handleSubmit = (event) => {
-    const { user, produk, jumlah} = this.state
+    const { user, produk} = this.state
+    const { id } = this.props.match.params
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
         token,
-        otoritas: 'create_komisi'
+        otoritas: 'edit_komisi'
       }
-
-      axios.post('/komisi',{user, produk, jumlah},{ headers }).then((res) => {
-        this.setState({ swalSuccess: true})
+      axios.put(`/komisi/${id}`,{ user, produk},{ headers }).then((res) => {
+        this.setState({swalSuccess: true})
         this.props.history.push('/komisi')
       }).catch((err) => {
-        const message = err.response.data.message
-        this.setState({
-          error: {
-            status: true,
-            message: message
-          }
-        })
+        console.log(err)
       })
     }
     event.preventDefault()
   }
 
+  getData = () => {
+    const { id } = this.props.match.params
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'get_komisi'
+    }
+    axios.get(`/komisi/${id}`, { headers}).then((res) => {
+      const { user, produk } = res.data.data
+      this.setState({
+        user,
+        produk,
+      })
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   componentDidMount() {
+    this.getData()
     this.props.setAllUsers()
     this.props.setAllProduk()
   }
 
   render() {
-    const { user, produk, jumlah, error} = this.state
+    const { user, produk, error} = this.state
     const { users, produks} = this.props
     return (
       <div className="container" style={{ marginTop: '20px'}}>
+
         <div className="col-md-4 offset-md-4">
           <BreadCrumb
             secondText="Komisi"
-            thirdText="Tambah Komisi"
+            thirdText="Edit Komisi"
             secondUrl="/komisi"
           />
           {
@@ -113,19 +112,20 @@ class KomisiCreate extends React.Component {
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             user={user}
-            produk={produk}
-            jumlah={jumlah}
             users={users}
+            produk={produk}
             produks={produks}
+
           />
         </div>
         <AlertSuccess
-          type="create"
+          type="edit"
           status={this.state.swalSuccess}
         />
       </div>
     )
   }
+
 }
 
 const mapStateToProps = (state) => {
@@ -137,4 +137,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({ setAllProduk, setAllUsers}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(KomisiCreate)
+export default connect(mapStateToProps, mapDispatchToProps)(KomisiEdit)

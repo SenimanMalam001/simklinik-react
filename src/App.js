@@ -33,6 +33,9 @@ import ProdukEdit from './pages/produk/edit'
 import Komisi from './pages/komisi'
 import KomisiCreate from './pages/komisi/create'
 import KomisiEdit from './pages/komisi/edit'
+import KomisiPenjualan from './pages/komisipenjualan'
+import KomisiPenjualanCreate from './pages/komisipenjualan/create'
+import KomisiPenjualanEdit from './pages/komisipenjualan/edit'
 import Pasien from './pages/pasien'
 import PasienCreate from './pages/pasien/create'
 import PasienEdit from './pages/pasien/edit'
@@ -104,6 +107,9 @@ class App extends Component {
           <Route path="/komisi" exact component={Komisi} />
           <Route path="/komisi/create" exact component={KomisiCreate} />
           <Route path="/komisi/edit/:id" exact component={KomisiEdit} />
+          <Route path="/komisipenjualan" exact component={KomisiPenjualan} />
+          <Route path="/komisipenjualan/create" exact component={KomisiPenjualanCreate} />
+          <Route path="/komisipenjualan/edit/:id" exact component={KomisiPenjualanEdit} />
           <Route path="/pasien" exact component={Pasien} />
           <Route path="/pasien/create" exact component={PasienCreate} />
           <Route path="/pasien/edit/:id" exact component={PasienEdit} />

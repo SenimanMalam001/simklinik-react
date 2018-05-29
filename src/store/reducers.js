@@ -15,6 +15,7 @@ import {
   SET_ITEM_KELUAR,
   SET_PASIEN_REGISTRASI,
   SET_KOMISI,
+  SET_KOMISI_PENJUALAN,
   SET_PASIEN,
   SET_PENJAMIN,
   SET_SUPPLIER,
@@ -41,6 +42,7 @@ const initialState = {
   tbs_penjualans: [],
   kas_mutasis: [],
   komisi: [],
+  komisipenjualans: [],
   item_masuks: [],
   item_keluars: [],
   stok_awals: [],
@@ -170,6 +172,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       komisi: action.payload
+    }
+  }
+  if(action.type === SET_KOMISI_PENJUALAN) {
+    return {
+      ...state,
+      komisipenjualans: action.payload
     }
   }
   if(action.type === SET_PRODUK) {

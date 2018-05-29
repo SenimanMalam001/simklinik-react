@@ -45,16 +45,16 @@ class PenjualanCreate extends React.Component {
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-12">
-          <BreadCrumb
-            secondText="Penjualan "
-            thirdText="Tambah"
-            secondUrl="/penjualan"
-          />
           {
             error.status && <Alert type="danger" text={error.message} />
           }
           <div className="row">
             <div className="col-md-8">
+              <BreadCrumb
+                secondText="Penjualan "
+                thirdText="Tambah"
+                secondUrl="/penjualan"
+              />
               <FormTbs />
               <TableTbs />
             </div>

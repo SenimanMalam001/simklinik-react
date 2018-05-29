@@ -7,6 +7,7 @@ const Form = (props) => {
     handleSubmit,
     handleChange,
     user,
+    no_trans,
     produk,
     users,
     produks,
@@ -35,6 +36,14 @@ const Form = (props) => {
   })
   return (
     <form onSubmit={ handleSubmit}>
+      <TextInputWithLabel
+        label="No Trans"
+        placeholder="Masukkan No Trans Penjualan"
+        type="text"
+        name="no_trans"
+        value={no_trans}
+        handleChange={handleChange}
+      />
       <SelectBox
         label="User"
         placeholder="Pilih User"
