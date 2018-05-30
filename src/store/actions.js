@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PETUGAS,
+  SET_PEMBAYARAN_PIUTANG,
   SET_PRODUK,
   SET_STOK_AWAL,
   SET_PEMBELIAN,
@@ -79,6 +80,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setPembayaranPiutang = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/pembayaranpiutang?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_pembayaran_piutang' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_PEMBAYARAN_PIUTANG,
         payload: data
       })
       dispatch({

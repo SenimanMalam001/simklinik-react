@@ -70,6 +70,8 @@ import PenjualanEdit from './pages/penjualan/edit'
 import Petugas from './pages/petugas'
 import PetugasCreate from './pages/petugas/create'
 import PetugasEdit from './pages/petugas/edit'
+import PembayaranPiutang from './pages/pembayaranpiutang'
+import PembayaranPiutangCreate from './pages/pembayaranpiutang/create'
 
 class App extends Component {
   render() {
@@ -144,6 +146,8 @@ class App extends Component {
           <Route path="/petugas" exact component={Petugas} />
           <Route path="/petugas/create" exact component={PetugasCreate} />
           <Route path="/petugas/edit/:id" exact component={PetugasEdit} />
+          <Route path="/pembayaranpiutang" exact component={PembayaranPiutang} />
+          <Route path="/pembayaranpiutang/create" exact component={PembayaranPiutangCreate} />
         </Switch>
       </div>
     );

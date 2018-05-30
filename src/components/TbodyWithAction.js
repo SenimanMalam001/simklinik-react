@@ -38,7 +38,9 @@ class TbodyWithAction extends React.Component {
                 {
                   !actionNotDisplay && (
                     <td>
-                      <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
+                      {
+                        editUrl && <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
+                      }
                       <button
                         className="btn btn-danger"
                         onClick={ () => {
