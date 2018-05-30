@@ -2,7 +2,7 @@ import React from 'react';
 import BreadCrumb from '../../components/BreadCrumb'
 import Form from './form'
 
-class PembayaranPiutangCreate extends React.Component {
+class PembayaranHutangCreate extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -25,9 +25,9 @@ class PembayaranPiutangCreate extends React.Component {
           <div className="row">
             <div className="col-md-4 offset-md-4">
               <BreadCrumb
-                secondText="Pembayaran Piutang "
+                secondText="Pembayaran Hutang "
                 thirdText="Tambah"
-                secondUrl="/pembayaranpiutang"
+                secondUrl="/pembayaranhutang"
               />
             <Form history={this.props.history} />
             </div>
@@ -39,4 +39,4 @@ class PembayaranPiutangCreate extends React.Component {
 }
 
 
-export default PembayaranPiutangCreate
+export default PembayaranHutangCreate
