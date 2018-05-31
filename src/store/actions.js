@@ -20,6 +20,8 @@ import {
   SET_KOMISI_PENJUALAN,
   SET_USERS,
   SET_KAS,
+  SET_POSISI_KAS,
+  SET_TRANSAKSI_KAS,
   SET_PASIEN,
   SET_PENJAMIN,
   SET_SUPPLIER,
@@ -481,6 +483,29 @@ export const setKasManual = (page, query) => {
         type: SET_PAGES,
         payload: pages
       })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setTransaksiKas = (query) => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/transaksikas?${query}`,{ headers: { token, otoritas: 'get_transaksi_kas' }}).then((res) => {
+      const { data, posisi_kas } = res.data
+      dispatch({
+        type: SET_TRANSAKSI_KAS,
+        payload: data
+      })
+      dispatch({
+        type: SET_POSISI_KAS,
+        payload: posisi_kas == null ? 0 : posisi_kas
+      })
+
       dispatch(loadingFinish)
     }).catch((err) => {
       dispatch(loadingFinish)

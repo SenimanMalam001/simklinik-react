@@ -74,6 +74,7 @@ import PembayaranPiutang from './pages/pembayaranpiutang'
 import PembayaranPiutangCreate from './pages/pembayaranpiutang/create'
 import PembayaranHutang from './pages/pembayaranhutang'
 import PembayaranHutangCreate from './pages/pembayaranhutang/create'
+import TransaksiKas from './pages/transaksikas'
 
 class App extends Component {
   render() {
@@ -152,6 +153,7 @@ class App extends Component {
           <Route path="/pembayaranpiutang/create" exact component={PembayaranPiutangCreate} />
           <Route path="/pembayaranhutang" exact component={PembayaranHutang} />
           <Route path="/pembayaranhutang/create" exact component={PembayaranHutangCreate} />
+          <Route path="/transaksikas" exact component={TransaksiKas} />
         </Switch>
       </div>
     );

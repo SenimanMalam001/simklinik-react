@@ -24,6 +24,8 @@ import {
   SET_PAGES,
   SET_USERS,
   SET_KAS,
+  SET_POSISI_KAS,
+  SET_TRANSAKSI_KAS,
   SET_RUANGANS,
   SET_POLI,
   LOADING,
@@ -37,6 +39,8 @@ const initialState = {
   users: [],
   petugas: [],
   kas: [],
+  posisikas: 0,
+  transaksikas: [],
   kas_manuals: [],
   pembayaranpiutangs: [],
   pembayaranhutangs: [],
@@ -85,6 +89,14 @@ const reducer = (state = initialState, action) => {
       petugas: action.payload
     }
   }
+
+  if(action.type === SET_TRANSAKSI_KAS) {
+    return {
+      ...state,
+      transaksikas: action.payload
+    }
+  }
+
   if(action.type === SET_PEMBAYARAN_PIUTANG) {
     return {
       ...state,
@@ -135,6 +147,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       registrasi: action.payload
+    }
+  }
+  if(action.type === SET_POSISI_KAS) {
+    return {
+      ...state,
+      posisikas: action.payload
     }
   }
 
