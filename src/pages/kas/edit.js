@@ -12,6 +12,7 @@ class KasEdit extends React.Component {
     this.state = {
       kode: '',
       nama: '',
+      default_kas: '0',
       error: {
         status: false,
         message: ''
@@ -51,7 +52,7 @@ class KasEdit extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { kode, nama} = this.state
+    const { kode, nama, default_kas} = this.state
     const { id } = this.props.match.params
     if (this.validate()) {
       const token = localStorage.token
@@ -60,7 +61,7 @@ class KasEdit extends React.Component {
         otoritas: 'edit_kas'
       }
 
-      axios.put(`/kas/${id}`,{ kode, nama},{ headers }).then((res) => {
+      axios.put(`/kas/${id}`,{ kode, nama, default_kas},{ headers }).then((res) => {
         this.setState({swalSuccess: true})
         this.props.history.push('/kas')
       }).catch((err) => {
@@ -78,10 +79,11 @@ class KasEdit extends React.Component {
       otoritas: 'get_kas'
     }
     axios.get(`/kas/${id}`, { headers}).then((res) => {
-      const { kode, nama } = res.data.data
+      const { kode, nama, default_kas } = res.data.data
       this.setState({
         kode,
         nama,
+        default_kas
       })
     }).catch((err) => {
       console.log(err);
@@ -93,7 +95,7 @@ class KasEdit extends React.Component {
   }
 
   render() {
-    const { kode, jumlah, nama, error} = this.state
+    const { kode, default_kas, nama, error} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
 
@@ -111,6 +113,7 @@ class KasEdit extends React.Component {
             handleSubmit={this.handleSubmit}
             kode={kode}
             nama={nama}
+            default_kas={default_kas}
           />
         </div>
         <AlertSuccess

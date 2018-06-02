@@ -12,6 +12,7 @@ class KasCreate extends React.Component {
     this.state = {
       kode: '',
       nama: '',
+      default_kas: '0',
       error: {
         status: false,
         message: ''
@@ -51,7 +52,7 @@ class KasCreate extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { kode, nama} = this.state
+    const { kode, nama, default_kas} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
@@ -59,7 +60,7 @@ class KasCreate extends React.Component {
         otoritas: 'create_kas'
       }
 
-      axios.post('/kas',{kode, nama},{ headers }).then((res) => {
+      axios.post('/kas',{kode, nama, default_kas},{ headers }).then((res) => {
         this.setState({ swalSuccess: true})
         this.props.history.push('/kas')
       }).catch((err) => {
@@ -76,7 +77,7 @@ class KasCreate extends React.Component {
   }
 
   render() {
-    const { kode , jumlah, nama,   error} = this.state
+    const { kode , nama, default_kas,   error} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
@@ -93,6 +94,7 @@ class KasCreate extends React.Component {
             handleSubmit={this.handleSubmit}
             kode={kode}
             nama={nama}
+            default_kas={default_kas}
           />
         </div>
         <AlertSuccess
