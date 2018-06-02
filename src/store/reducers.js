@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PETUGAS,
+  SET_PROFIL,
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
@@ -37,6 +38,7 @@ import {
 
 const initialState = {
   token: '',
+  profil: '',
   users: [],
   petugas: [],
   rekammedik: [],
@@ -89,6 +91,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       petugas: action.payload
+    }
+  }
+
+  if(action.type === SET_PROFIL) {
+    return {
+      ...state,
+      profil: action.payload
     }
   }
 

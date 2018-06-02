@@ -84,6 +84,7 @@ class Navbar extends Component {
                 <Link className="dropdown-item" to="/pasien">Pasien</Link>
                 <Link className="dropdown-item" to="/kategori-transaksi">Kategori Transaksi</Link>
                 <Link className="dropdown-item" to="/petugas">Petugas</Link>
+                <Link className="dropdown-item" to="/profil">Profil</Link>
               </div>
             </li>
             {

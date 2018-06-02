@@ -78,6 +78,8 @@ import TransaksiKas from './pages/transaksikas'
 import RekamMedik from './pages/rekammedik'
 import RekamMedikCreate from './pages/rekammedik/create'
 import RekamMedikEdit from './pages/rekammedik/edit'
+import Profil from './pages/profil'
+import ProfilEdit from './pages/profil/edit'
 
 class App extends Component {
   render() {
@@ -160,6 +162,8 @@ class App extends Component {
           <Route path="/rekammedik" exact component={RekamMedik} />
           <Route path="/rekammedik/create" exact component={RekamMedikCreate} />
           <Route path="/rekammedik/edit/:id" exact component={RekamMedikEdit} />
+          <Route path="/profil" exact component={Profil} />
+          <Route path="/profil/edit/:id" exact component={ProfilEdit} />
         </Switch>
       </div>
     );

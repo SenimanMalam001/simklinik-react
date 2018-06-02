@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PETUGAS,
+  SET_PROFIL,
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
@@ -89,6 +90,24 @@ export const setUsers = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setProfil = () => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/profil`,{ headers: { token, otoritas: 'get_profil' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_PROFIL,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {

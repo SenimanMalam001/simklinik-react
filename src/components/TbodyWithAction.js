@@ -24,7 +24,7 @@ class TbodyWithAction extends React.Component {
                   Object.keys(data).map((key) => {
                     if (display.indexOf(key) > -1) {
                       return (
-                        <td key={key}>{!isNaN(data[key]) ? (
+                        <td key={key}>{!isNaN(data[key]) && key != 'no_telp' ? (
                           <Currency
                             value={data[key]}
                             displayType={'text'}
@@ -41,14 +41,18 @@ class TbodyWithAction extends React.Component {
                       {
                         editUrl && <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
                       }
-                      <button
-                        className="btn btn-danger"
-                        onClick={ () => {
-                          this.setState({swalDelete: true, id: data.id})
-                        }}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
+                      {
+                        deleteAction && (
+                          <button
+                            className="btn btn-danger"
+                            onClick={ () => {
+                              this.setState({swalDelete: true, id: data.id})
+                            }}
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        )
+                      }
                     </td>
                   )
                 }
