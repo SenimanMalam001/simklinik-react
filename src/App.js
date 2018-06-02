@@ -75,6 +75,9 @@ import PembayaranPiutangCreate from './pages/pembayaranpiutang/create'
 import PembayaranHutang from './pages/pembayaranhutang'
 import PembayaranHutangCreate from './pages/pembayaranhutang/create'
 import TransaksiKas from './pages/transaksikas'
+import RekamMedik from './pages/rekammedik'
+import RekamMedikCreate from './pages/rekammedik/create'
+import RekamMedikEdit from './pages/rekammedik/edit'
 
 class App extends Component {
   render() {
@@ -154,6 +157,9 @@ class App extends Component {
           <Route path="/pembayaranhutang" exact component={PembayaranHutang} />
           <Route path="/pembayaranhutang/create" exact component={PembayaranHutangCreate} />
           <Route path="/transaksikas" exact component={TransaksiKas} />
+          <Route path="/rekammedik" exact component={RekamMedik} />
+          <Route path="/rekammedik/create" exact component={RekamMedikCreate} />
+          <Route path="/rekammedik/edit/:id" exact component={RekamMedikEdit} />
         </Switch>
       </div>
     );

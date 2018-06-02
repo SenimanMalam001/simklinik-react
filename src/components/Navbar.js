@@ -24,6 +24,9 @@ class Navbar extends Component {
               <Link to="/registrasi" className="nav-link">Registrasi</Link>
             </li>
             <li className="nav-item active">
+              <Link to="/rekammedik" className="nav-link">Rekam Medik</Link>
+            </li>
+            <li className="nav-item active">
               <Link to="/penjualan" className="nav-link">Penjualan</Link>
             </li>
             <li className="nav-item dropdown">

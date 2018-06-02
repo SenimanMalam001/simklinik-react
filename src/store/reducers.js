@@ -4,6 +4,7 @@ import {
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
+  SET_REKAM_MEDIK,
   SET_STOK_AWAL,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
@@ -38,6 +39,7 @@ const initialState = {
   token: '',
   users: [],
   petugas: [],
+  rekammedik: [],
   kas: [],
   posisikas: 0,
   transaksikas: [],
@@ -87,6 +89,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       petugas: action.payload
+    }
+  }
+
+  if(action.type === SET_REKAM_MEDIK) {
+    return {
+      ...state,
+      rekammedik: action.payload
     }
   }
 

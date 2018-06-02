@@ -4,6 +4,7 @@ import {
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
+  SET_REKAM_MEDIK,
   SET_STOK_AWAL,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
@@ -83,6 +84,35 @@ export const setUsers = (page, query) => {
       const { data, pages } = res.data.data
       dispatch({
         type: SET_USERS,
+        payload: data
+      })
+      dispatch({
+        type: SET_PAGES,
+        payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setRekamMedik = (page, query) => {
+  if (!page) {
+    page = 1
+  }
+
+  if (!query) {
+    query = ''
+  }
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/rekammedik?page=${page}&q=${query}`,{ headers: { token, otoritas: 'get_rekam_medik' }}).then((res) => {
+      const { data, pages } = res.data.data
+      dispatch({
+        type: SET_REKAM_MEDIK,
         payload: data
       })
       dispatch({
