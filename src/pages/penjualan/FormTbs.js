@@ -108,7 +108,9 @@ class FormTbs  extends React.Component {
         value: produk.id,
         label: produk.nama,
         target: {name: 'produk', value: produk.id},
-        harga_jual: produk.harga_jual_1
+        harga_jual_1: produk.harga_jual_1,
+        harga_jual_2: produk.harga_jual_2,
+        harga_jual_3: produk.harga_jual_3
       }
     })
     return (
@@ -121,7 +123,8 @@ class FormTbs  extends React.Component {
             value={produk}
             onChange={(e) => {
               this.handleChange(e)
-              this.setState({harga_jual: e.harga_jual})
+              const { level } = this.props.penjamin_penjualan
+              this.setState({harga_jual: e[`harga_jual_${level}`]})
             }}
             options={produks}
             wrapperStyle={{ width: '15%'}}
@@ -166,7 +169,8 @@ class FormTbs  extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    produks: state.produk
+    produks: state.produk,
+    penjamin_penjualan: state.penjamin_penjualan
   }
 }
 

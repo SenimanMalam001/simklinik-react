@@ -1,6 +1,7 @@
 import {
   SET_TOKEN,
   SET_PETUGAS,
+  SET_PENJAMIN_PENJUALAN,
   SET_PROFIL,
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
@@ -42,6 +43,13 @@ export const setToken = (token) => {
   return {
     type: SET_TOKEN,
     payload: token
+  }
+}
+
+export const setPenjaminPenjualan = (data) => {
+  return {
+    type: SET_PENJAMIN_PENJUALAN,
+    payload: data
   }
 }
 

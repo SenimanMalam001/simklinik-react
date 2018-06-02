@@ -9,7 +9,8 @@ import {
   setAllUsers,
   setAllRegistrasi ,
   setAllPetugas,
-  setClearRegistrasi
+  setClearRegistrasi,
+  setPenjaminPenjualan
 } from '../../store/actions'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -281,18 +282,6 @@ class Pembayaran extends React.Component {
               prefix={'Rp.'}
             /></h3>
           </div>
-          <div className="form-group">
-            <label>Penjamin </label>
-            <Select
-              placeholder="Penjamin..."
-              name={penjamin}
-              className="mb-2 mr-sm-2"
-              value={penjamin}
-              onChange={this.handleChange}
-              options={penjamins}
-              ref={(ref) => { this.select = ref; }}
-            />
-          </div>
           <button type="submit" className="btn btn-primary">Selesai</button>
         </form>
         <AlertSuccess
@@ -318,10 +307,20 @@ class Pembayaran extends React.Component {
             <label>Registrasi </label>
             <Select
               placeholder="Registrasi..."
-              name={no_reg}
+              name="no_reg"
               className="mb-2 mr-sm-2"
               value={no_reg}
-              onChange={this.handleChange}
+              onChange={(e) => {
+                if (e) {
+                  this.handleChange(e)
+                  const penjamin =  this.props.registrasi.filter(data => data.id == e.value)[0].penjamin
+                  console.log(penjamin);
+                  this.setState({penjamin})
+                  this.props.setPenjaminPenjualan(this.props.penjamins.filter(data => data.id == penjamin)[0])
+                } else {
+                  this.setState({no_reg: ''})
+                }
+              }}
               options={registrasi}
               ref={(ref) => { this.select = ref; }}
             />
@@ -334,8 +333,33 @@ class Pembayaran extends React.Component {
               className="mb-2 mr-sm-2"
               value={petugas}
               multi={true}
-              onChange={this.handleChange}
+              onChange={(e) => {
+                if (e.length) {
+                  this.handleChange(e)
+                } else {
+                  this.setState({petugas: []})
+                }
+              }}
               options={users}
+              ref={(ref) => { this.select = ref; }}
+            />
+          </div>
+          <div className="form-group">
+            <label>Penjamin </label>
+            <Select
+              placeholder="Penjamin..."
+              name={penjamin}
+              className="mb-2 mr-sm-2"
+              value={penjamin}
+              onChange={(e) => {
+                if (e) {
+                  this.handleChange(e)
+                  this.props.setPenjaminPenjualan(this.props.penjamins.filter(data => data.id == e.value)[0])
+                } else {
+                  this.setState({penjamin: ''})
+                }
+              }}
+              options={penjamins}
               ref={(ref) => { this.select = ref; }}
             />
           </div>
@@ -367,7 +391,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setAllUsers,
     setAllRegistrasi,
     setAllPetugas,
-    setClearRegistrasi
+    setClearRegistrasi,
+    setPenjaminPenjualan
   },
   dispatch
 )
