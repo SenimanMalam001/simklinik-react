@@ -6,8 +6,10 @@ import {
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
+  SET_PERSEDIAAN,
   SET_REKAM_MEDIK,
   SET_STOK_AWAL,
+  SET_STOK_AKHIR,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
   SET_PENJUALAN,
@@ -45,6 +47,8 @@ const initialState = {
   rekammedik: [],
   kas: [],
   posisikas: 0,
+  persediaan: [],
+  stok_akhir: 0,
   transaksikas: [],
   kas_manuals: [],
   pembayaranpiutangs: [],
@@ -89,6 +93,12 @@ const reducer = (state = initialState, action) => {
       pages: action.payload
     }
   }
+  if(action.type === SET_STOK_AKHIR) {
+    return {
+      ...state,
+      stok_akhir: action.payload
+    }
+  }
   if(action.type === SET_PETUGAS) {
     return {
       ...state,
@@ -121,6 +131,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       transaksikas: action.payload
+    }
+  }
+
+  if(action.type === SET_PERSEDIAAN) {
+    return {
+      ...state,
+      persediaan: action.payload
     }
   }
 

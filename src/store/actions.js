@@ -6,8 +6,10 @@ import {
   SET_PEMBAYARAN_PIUTANG,
   SET_PEMBAYARAN_HUTANG,
   SET_PRODUK,
+  SET_PERSEDIAAN,
   SET_REKAM_MEDIK,
   SET_STOK_AWAL,
+  SET_STOK_AKHIR,
   SET_PEMBELIAN,
   SET_TBS_PEMBELIAN,
   SET_PENJUALAN,
@@ -563,6 +565,28 @@ export const setTransaksiKas = (query) => {
         payload: posisi_kas == null ? 0 : posisi_kas
       })
 
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setPersediaan = (query) => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/persediaan?${query}`,{ headers: { token, otoritas: 'get_persediaan' }}).then((res) => {
+      const { data, stok_akhir } = res.data
+      dispatch({
+        type: SET_PERSEDIAAN,
+        payload: data
+      })
+      dispatch({
+        type: SET_STOK_AKHIR,
+        payload: stok_akhir
+      })
       dispatch(loadingFinish)
     }).catch((err) => {
       dispatch(loadingFinish)
