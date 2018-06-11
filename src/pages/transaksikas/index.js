@@ -86,7 +86,11 @@ class TransaksiKas extends React.Component {
               value={kas}
               multi={false}
               onChange={(e) => {
-                this.handleChange(e)
+                if (e) {
+                  this.handleChange(e)
+                } else {
+                  this.setState({kas: ''})
+                }
               }}
               options={kass}
               wrapperStyle={{ width: '15%',marginLeft: 12}}
@@ -108,7 +112,13 @@ class TransaksiKas extends React.Component {
               content={() => this.componentRef}
             />
         </form>
-        <DisplayData posisikas={posisikas} transaksikas={transaksikas} jenis={jenis} ref={el => (this.componentRef = el)} />
+        <DisplayData
+          posisikas={posisikas}
+          transaksikas={transaksikas}
+          jenis={jenis}
+          ref={el => (this.componentRef = el)}
+          kas={kas}
+         />
         <center>
           <BarLoader
             color={'#123abc'}
