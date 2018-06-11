@@ -71,6 +71,7 @@ class RekamMedik extends React.Component {
 
           }}
         />
+      <p>*Pencarian Berdasarkan No RM Pasien</p>
         <center>
           <BarLoader
             color={'#123abc'}
