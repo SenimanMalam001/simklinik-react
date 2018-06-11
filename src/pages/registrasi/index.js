@@ -55,8 +55,8 @@ class Registrasi extends React.Component {
         />
         <Table
           data={registrasi}
-          thead={['No RM','Nama','Dokter','Poli','Aksi']}
-          tbody={['no_rm','nama','dokter','poli']}
+          thead={['No RM','Nama','Dokter','Poli','Antrian','Aksi']}
+          tbody={['no_rm','nama','dokter','poli','no_antrian']}
           editUrl="/registrasi/edit"
           pages={pages}
           handlePageClick={this.handlePageClick}
