@@ -96,7 +96,6 @@ class StokOpname extends React.Component {
           data={stok_opnames}
           thead={['No Trans','Produk','Stok Akhir','Stok Komputer','Selisih','Nilai','Aksi']}
           tbody={['no_trans','produk','stok_komputer','stok_akhir','selisih','nilai_selisih']}
-          editUrl="/stok-opname/edit"
           pages={pages}
           handlePageClick={this.handlePageClick}
           deleteAction={(id) => {

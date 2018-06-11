@@ -20,6 +20,9 @@ import AlertSuccess from '../../components/AlertSuccess'
 import HotKey from 'react-shortcut'
 import Modal from 'react-modal';
 import CardInfoPetugas from './CardInfoPetugas'
+import SweetAlert from 'sweetalert2-react';
+import ReactToPrint from "react-to-print";
+import Print from './Print'
 
 const customStyles = {
   content : {
@@ -36,6 +39,7 @@ class Pembayaran extends React.Component {
   constructor(props) {
     super()
     this.state = {
+      penjualan: null,
       total_akhir: 0,
       subtotal: 0,
       diskon: 0,
@@ -52,7 +56,8 @@ class Pembayaran extends React.Component {
         status: false,
         message: ''
       },
-      swalSuccess: false
+      swalSuccess: false,
+      print: false
     }
   }
   handleChange = (e) => {
@@ -69,7 +74,7 @@ class Pembayaran extends React.Component {
     }
   }
   handleSubmit = (event) => {
-    const {error, swalSuccess, ...input} = this.state
+    const {error, swalSuccess, penjualan, ...input} = this.state
     const token = localStorage.token
     if (this.props.jenis === 'create') {
       const headers = {
@@ -77,8 +82,8 @@ class Pembayaran extends React.Component {
         otoritas: 'create_penjualan'
       }
       axios.post('/penjualan', input,{ headers }).then((res) => {
-        this.setState({ swalSuccess: true})
-        this.props.history.push('/penjualan')
+
+        this.setState({ swalSuccess: true, penjualan: res.data.data})
       }).catch((err) => {
         const message = err.response.data.message
         this.setState({
@@ -143,6 +148,7 @@ class Pembayaran extends React.Component {
       }
       this.setState(penjualan)
       this.props.setTbsPenjualan()
+      this.props.setPenjaminPenjualan(penjualan.Penjamin)
     }).catch((err) => {
       console.log(err);
     })
@@ -244,7 +250,13 @@ class Pembayaran extends React.Component {
             type="text"
             name="diskon"
             value={diskon}
-            handleChange={this.handleChange}
+            handleChange={(e) => {
+              if (e) {
+                this.handleChange(e)
+              } else {
+                this.setState({diskon: ''})
+              }
+            }}
           />
           <label>Cara Bayar </label>
           <Select
@@ -252,7 +264,13 @@ class Pembayaran extends React.Component {
             name={cara_bayar}
             className="mb-2 mr-sm-2"
             value={cara_bayar}
-            onChange={this.handleChange}
+            onChange={(e) => {
+              if (e) {
+                this.handleChange(e)
+              } else {
+                this.setState({diskon: ''})
+              }
+            }}
             options={kass}
             ref={(ref) => { this.select = ref; }}
           />
@@ -284,9 +302,14 @@ class Pembayaran extends React.Component {
           </div>
           <button type="submit" className="btn btn-primary">Selesai</button>
         </form>
-        <AlertSuccess
-          type="create"
-          status={this.state.swalSuccess}
+        <SweetAlert
+          show={this.state.swalSuccess}
+          title="Berhasil"
+          type="success"
+          text="Data Berhasil Di Tambahkan"
+          onConfirm={() => {
+            this.setState({ swalSuccess: false, print: true })
+          }}
         />
         <HotKey
           keys={['f1']}
@@ -365,6 +388,16 @@ class Pembayaran extends React.Component {
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
+      </Modal>
+      <Modal
+        isOpen={this.state.print}
+        style={customStyles}
+      >
+        <ReactToPrint
+          trigger={() => <a href="#" className="btn btn-primary"><i className="fas fa-print"></i> Print</a>}
+          content={() => this.componentRef} />
+        <button onClick={() => this.setState({print: false})}  className="btn btn-danger">Close </button>
+        <Print  ref={el => (this.componentRef = el)} penjualan={this.state.penjualan} />
       </Modal>
       </div>
 

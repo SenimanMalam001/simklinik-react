@@ -122,9 +122,13 @@ class FormTbs  extends React.Component {
             className="mb-2 mr-sm-2"
             value={produk}
             onChange={(e) => {
-              this.handleChange(e)
-              const { level } = this.props.penjamin_penjualan
-              this.setState({harga_jual: e[`harga_jual_${level}`]})
+              if (e) {
+                this.handleChange(e)
+                const { level } = this.props.penjamin_penjualan
+                this.setState({harga_jual: e[`harga_jual_${level}`]})
+              } else {
+                this.setState({produk: ''})
+              }
             }}
             options={produks}
             wrapperStyle={{ width: '15%'}}
