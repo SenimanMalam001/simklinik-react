@@ -12,7 +12,7 @@ class DisplayData extends React.Component {
   }
   render() {
 
-    const { transaksikas, jenis, posisikas } = this.props
+    const { transaksikas, jenis, posisikas, kas } = this.props
     const rekapans = []
     let total_masuk = 0
     let total_keluar = 0
@@ -62,7 +62,9 @@ class DisplayData extends React.Component {
               jenis != 'Rekap' && <td>No Trans</td>
             }
               <td>Kategori</td>
-              <td>Kas</td>
+            {
+              kas != '' && <td>Kas</td>
+            }
               <td>Masuk</td>
               <td>Keluar</td>
             </tr>
@@ -76,7 +78,9 @@ class DisplayData extends React.Component {
                       jenis != 'Rekap' &&  <td>{ data.no_trans}</td>
                     }
                     <td>{ data.kategori}</td>
-                    <td>{ data.kas}</td>
+                    {
+                      kas != '' &&  <td>{ data.kas}</td>
+                    }
                     <td>
                       <Currency
                         value={data.masuk}
@@ -99,7 +103,9 @@ class DisplayData extends React.Component {
               {
                 jenis != 'Rekap' &&  <td>{ data.no_trans}</td>
               }
-              <td></td>
+              {
+                kas != '' &&  <td></td>
+              }
               <td>Total : </td>
               <td>
                 <Currency
@@ -118,33 +124,45 @@ class DisplayData extends React.Component {
             </tr>
           </tbody>
         </table>
-        <h5>
-          Kas Sebelumnya
-          <Currency
-            value={posisikas}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix=" Rp. "
-           />
-        </h5>
-        <h5>
-          Perubahan Kas
-          <Currency
-            value={perubahankas}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix=" Rp. "
-           />
-        </h5>
-        <h5>
-          Kas Akhir
-          <Currency
-            value={kasakhir}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix=" Rp. "
-           />
-        </h5>
+        {
+          kas != '' && (
+            <h5>
+              Kas Sebelumnya
+              <Currency
+                value={posisikas}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix=" Rp. "
+               />
+            </h5>
+          )
+        }
+        {
+          kas != '' && (
+            <h5>
+              Perubahan Kas
+              <Currency
+                value={perubahankas}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix=" Rp. "
+               />
+            </h5>
+          )
+        }
+        {
+          kas != '' && (
+            <h5>
+              Kas Akhir
+              <Currency
+                value={kasakhir}
+                displayType={'text'}
+                thousandSeparator={true}
+                prefix=" Rp. "
+               />
+            </h5>
+          )
+        }
       </div>
     )
   }
