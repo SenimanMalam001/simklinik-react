@@ -29,6 +29,7 @@ class RegistrasiCreate extends React.Component {
       tinggi_badan: '',
       no_rm: '',
       nama: '',
+      no_telp:'',
       pasiens: [],
       tanggal_lahir:'',
       error: {
@@ -142,14 +143,13 @@ class RegistrasiCreate extends React.Component {
   }
 
   handleSubmitSearch = (event) => {
-    const { no_rm,nama, tanggal_lahir,} = this.state
+    const { no_rm,nama, tanggal_lahir, no_telp} = this.state
       const token = localStorage.token
       const headers = {
         token,
         otoritas: 'get_pasien'
       }
-      axios.post('/pasien/search',{no_rm, nama,tanggal_lahir},{ headers }).then((res) => {
-        console.log(res.data.data);
+      axios.post('/pasien/search',{no_rm, nama,tanggal_lahir, no_telp},{ headers }).then((res) => {
         this.setState({
           pasiens: res.data.data
         })
@@ -196,6 +196,7 @@ class RegistrasiCreate extends React.Component {
       no_rm,
       nama,
       tanggal_lahir,
+      no_telp,
       pasiens,
       pasien_registrasi,
       error
@@ -203,7 +204,7 @@ class RegistrasiCreate extends React.Component {
     const { penjamins, users, polis, ruangans  } = this.props
     return (
       <div className="container" style={{ marginTop: '20px'}}>
-        <div className="col-md-8 offset-md-2">
+        <div className="col-md-10 offset-md-1">
           <BreadCrumb
             secondText="Registrasi"
             thirdText="Pasien Lama"
@@ -216,6 +217,7 @@ class RegistrasiCreate extends React.Component {
             <input type="text" value={no_rm} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="no_rm" placeholder="No RM"/>
             <input type="text" value={nama} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="nama" placeholder="Nama"/>
             <input type="text" value={tanggal_lahir} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="tanggal_lahir" placeholder="Tanggal Lahir"/>
+            <input type="text" value={no_telp} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="no_telp" placeholder="No Telp / Hp"/>
             <button type="submit" className="btn btn-primary mb-2">Cari</button>
           </form>
           <table className="table">
@@ -225,6 +227,7 @@ class RegistrasiCreate extends React.Component {
                 <th>Nama</th>
                 <th>Tanggal Lahir</th>
                 <th>Alamat</th>
+                <th>No Telp / Hp</th>
               </tr>
             </thead>
             <tbody>
@@ -236,6 +239,7 @@ class RegistrasiCreate extends React.Component {
                       <td>{ pasien.nama}</td>
                       <td>{ pasien.tanggal_lahir}</td>
                       <td>{ pasien.alamat}</td>
+                      <td>{ pasien.no_telp}</td>
                     </tr>
                   )
                 })
