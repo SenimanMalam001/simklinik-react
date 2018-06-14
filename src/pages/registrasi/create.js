@@ -8,7 +8,6 @@ import AlertSuccess from '../../components/AlertSuccess'
 import { connect } from 'react-redux'
 import { setAllPenjamin, setPoli, setAllUsers, setAllRuangans } from '../../store/actions'
 import { bindActionCreators } from 'redux'
-import ModalPasien from './modalPasien'
 import TextInputWithLabel from '../../components/TextInputWithLabel'
 import SelectBox from '../../components/SelectBox'
 
@@ -31,7 +30,7 @@ class RegistrasiCreate extends React.Component {
       nama: '',
       no_telp:'',
       pasiens: [],
-      tanggal_lahir:'',
+      alamat:'',
       error: {
         status: false,
         message: ''
@@ -143,13 +142,13 @@ class RegistrasiCreate extends React.Component {
   }
 
   handleSubmitSearch = (event) => {
-    const { no_rm,nama, tanggal_lahir, no_telp} = this.state
+    const { no_rm,nama, alamat, no_telp} = this.state
       const token = localStorage.token
       const headers = {
         token,
         otoritas: 'get_pasien'
       }
-      axios.post('/pasien/search',{no_rm, nama,tanggal_lahir, no_telp},{ headers }).then((res) => {
+      axios.post('/pasien/search',{no_rm, nama,alamat, no_telp},{ headers }).then((res) => {
         this.setState({
           pasiens: res.data.data
         })
@@ -195,7 +194,7 @@ class RegistrasiCreate extends React.Component {
       berat_badan,
       no_rm,
       nama,
-      tanggal_lahir,
+      alamat,
       no_telp,
       pasiens,
       pasien_registrasi,
@@ -216,7 +215,7 @@ class RegistrasiCreate extends React.Component {
           <form className="form-inline" onSubmit={this.handleSubmitSearch}>
             <input type="text" value={no_rm} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="no_rm" placeholder="No RM"/>
             <input type="text" value={nama} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="nama" placeholder="Nama"/>
-            <input type="text" value={tanggal_lahir} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="tanggal_lahir" placeholder="Tanggal Lahir"/>
+            <input type="text" value={alamat} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="alamat" placeholder="Alamat Pasien"/>
             <input type="text" value={no_telp} onChange={this.handleChange} className="form-control mb-2 mr-sm-2" name="no_telp" placeholder="No Telp / Hp"/>
             <button type="submit" className="btn btn-primary mb-2">Cari</button>
           </form>
@@ -266,6 +265,14 @@ class RegistrasiCreate extends React.Component {
               value={pasien_registrasi ?`  ${pasien_registrasi.no_rm} | ${pasien_registrasi.nama} ` : ''}
               name="pasien"
               placeholder="Pasien"
+              type="text"
+              readOnly={true}
+            />
+            <TextInputWithLabel
+              label="Alergi"
+              value={pasien_registrasi ? `${pasien_registrasi.alergi}`: ''}
+              name="alergi"
+              placeholder="Alergi"
               type="text"
               readOnly={true}
             />

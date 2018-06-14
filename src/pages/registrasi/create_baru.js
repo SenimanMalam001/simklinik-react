@@ -32,6 +32,7 @@ class RegistrasiCreate extends React.Component {
       gender:'',
       no_telp:'',
       alamat:'',
+      alergi: '',
       pasiens: [],
       tanggal_lahir:'',
       error: {
@@ -110,7 +111,8 @@ class RegistrasiCreate extends React.Component {
       no_telp,
       gender,
       nama,
-      tanggal_lahir
+      tanggal_lahir,
+      alergi
     } = this.state
     let { ruangan } = this.state
     if (ruangan == '') {
@@ -140,11 +142,11 @@ class RegistrasiCreate extends React.Component {
         gender,
         nama,
         tanggal_lahir,
-        penjamin
+        penjamin,
+        alergi
       }
       axios.post('/pasien',inputPasien,{ headers }).then((res) => {
         inputRegistrasi.pasien = res.data.data.no_rm
-        console.log(inputRegistrasi);
         return inputRegistrasi
       }).then(input => {
         return axios.post('/registrasi', input, { headers })
@@ -221,6 +223,7 @@ class RegistrasiCreate extends React.Component {
       alamat,
       no_telp,
       tanggal_lahir,
+      alergi,
       pasiens,
       pasien_registrasi,
       error
@@ -305,6 +308,14 @@ class RegistrasiCreate extends React.Component {
             value={alamat}
             name="alamat"
             placeholder="Alamat Pasien"
+            type="text"
+            handleChange={this.handleChange}
+          />
+          <TextInputWithLabel
+            label="Alergi Pasien"
+            value={alergi}
+            name="alergi"
+            placeholder="Alergi Pasien"
             type="text"
             handleChange={this.handleChange}
           />
