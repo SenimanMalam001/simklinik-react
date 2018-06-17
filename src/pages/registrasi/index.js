@@ -54,7 +54,7 @@ class Registrasi extends React.Component {
           handleChange={this.handleChange}
         />
         <Table
-          data={registrasi}
+          data={registrasi.filter(data => data.status_registrasi == 0)}
           thead={['No RM','Nama','Dokter','Poli','Antrian','Aksi']}
           tbody={['no_rm','nama','dokter','poli','no_antrian']}
           editUrl="/registrasi/edit"

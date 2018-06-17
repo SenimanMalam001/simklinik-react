@@ -46,6 +46,7 @@ class Pembayaran extends React.Component {
       cara_bayar: '',
       jumlah_bayar: 0,
       kembalian: 0,
+      keterangan: '',
       jumlah_kredit: 0,
       penjamin: '',
       status_jual: '',
@@ -190,7 +191,7 @@ class Pembayaran extends React.Component {
     }
   }
   render() {
-    const {  no_reg, petugas, total_akhir, jumlah_bayar, kembalian, diskon, cara_bayar, penjamin } = this.state
+    const {  no_reg, petugas, total_akhir, jumlah_bayar, kembalian, keterangan, diskon, cara_bayar, penjamin } = this.state
     let { kass, penjamins, users, registrasi } = this.props
     kass = kass.map(kas => {
       return {
@@ -299,6 +300,22 @@ class Pembayaran extends React.Component {
               thousandSeparator={true}
               prefix={'Rp.'}
             /></h3>
+          </div>
+          <div className="form-group">
+            <TextInputWithLabel
+              label="Keterangan"
+              placeholder="Keterangan"
+              type="text"
+              name="keterangan"
+              value={keterangan}
+              handleChange={(e) => {
+                if (e) {
+                  this.handleChange(e)
+                } else {
+                  this.setState({keterangan: ''})
+                }
+              }}
+            />
           </div>
           <button type="submit" className="btn btn-primary">Selesai</button>
         </form>

@@ -73,7 +73,7 @@ class RegistrasiCreate extends React.Component {
       return false
     }
 
-    if (!dokter) {
+    if (!dokter && jenis_registrasi !== 'apotek') {
       this.setState({
         error: {
           status: true,
@@ -83,7 +83,7 @@ class RegistrasiCreate extends React.Component {
       return false
     }
 
-    if (!poli) {
+    if (!poli && jenis_registrasi !== 'apotek') {
       this.setState({
         error: {
           status: true,
@@ -126,9 +126,9 @@ class RegistrasiCreate extends React.Component {
       }
       const inputRegistrasi = {
         pasien,
-        poli,
+        poli: poli != '' ? poli : null,
         jenis_registrasi,
-        dokter,
+        dokter: dokter != '' ? dokter : null,
         ruangan,
         penjamin,
         suhu,
@@ -252,6 +252,9 @@ class RegistrasiCreate extends React.Component {
                 },
                 {
                   label: 'Rawat Inap',value:'rawat_inap', target: { value: 'rawat_inap',name: 'jenis_registrasi'},
+                },
+                {
+                  label: 'Apotek',value:'apotek', target: { value: 'apotek',name: 'jenis_registrasi'},
                 }
               ]}
             />
@@ -319,34 +322,38 @@ class RegistrasiCreate extends React.Component {
             type="text"
             handleChange={this.handleChange}
           />
-          <div className="row">
-            <div className="col-md-6">
-              <SelectBox
-                value={poli}
-                name="poli"
-                label="Poli"
-                handleChange={this.handleChange}
-                options={ polis.map( poli => {
-                  return {
-                    label: poli.display_name, value: poli.id, target: { name: 'poli', value: poli.id}
-                  }
-                })}
-              />
+        {
+          jenis_registrasi !== 'apotek' && (
+            <div className="row">
+              <div className="col-md-6">
+                <SelectBox
+                  value={poli}
+                  name="poli"
+                  label="Poli"
+                  handleChange={this.handleChange}
+                  options={ polis.map( poli => {
+                    return {
+                      label: poli.display_name, value: poli.id, target: { name: 'poli', value: poli.id}
+                    }
+                  })}
+                />
+              </div>
+              <div className="col-md-6">
+                <SelectBox
+                  value={dokter}
+                  name="dokter"
+                  label="Dokter"
+                  handleChange={this.handleChange}
+                  options={ users.map( user => {
+                    return {
+                      label: user.name, value: user.id, target: { name: 'dokter', value: user.id}
+                    }
+                  })}
+                />
+              </div>
             </div>
-            <div className="col-md-6">
-              <SelectBox
-                value={dokter}
-                name="dokter"
-                label="Dokter"
-                handleChange={this.handleChange}
-                options={ users.map( user => {
-                  return {
-                    label: user.name, value: user.id, target: { name: 'dokter', value: user.id}
-                  }
-                })}
-              />
-            </div>
-          </div>
+          )
+        }
             <SelectBox
               value={penjamin}
               name="penjamin"
@@ -373,48 +380,52 @@ class RegistrasiCreate extends React.Component {
               />
             )
           }
-          <div className="row">
-            <div className="col-md-6">
-              <TextInputWithLabel
-                label="Tinggi Badan"
-                value={tinggi_badan}
-                name="tinggi_badan"
-                placeholder="Tinggi Badan"
-                type="text"
-                handleChange={this.handleChange}
-              />
+          {
+            jenis_registrasi !== 'apotek' && (
+            <div className="row">
+              <div className="col-md-6">
+                <TextInputWithLabel
+                  label="Tinggi Badan"
+                  value={tinggi_badan}
+                  name="tinggi_badan"
+                  placeholder="Tinggi Badan"
+                  type="text"
+                  handleChange={this.handleChange}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextInputWithLabel
+                  label="Berat Badan"
+                  value={berat_badan}
+                  name="berat_badan"
+                  placeholder="Berat Badan"
+                  type="text"
+                  handleChange={this.handleChange}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextInputWithLabel
+                  label="Sistole Diastole"
+                  value={sistole_diastole}
+                  name="sistole_diastole"
+                  placeholder="Sistole Diastole"
+                  type="text"
+                  handleChange={this.handleChange}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextInputWithLabel
+                  label="Suhu"
+                  value={suhu}
+                  name="suhu"
+                  placeholder="Suhu"
+                  type="text"
+                  handleChange={this.handleChange}
+                />
+              </div>
             </div>
-            <div className="col-md-6">
-              <TextInputWithLabel
-                label="Berat Badan"
-                value={berat_badan}
-                name="berat_badan"
-                placeholder="Berat Badan"
-                type="text"
-                handleChange={this.handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <TextInputWithLabel
-                label="Sistole Diastole"
-                value={sistole_diastole}
-                name="sistole_diastole"
-                placeholder="Sistole Diastole"
-                type="text"
-                handleChange={this.handleChange}
-              />
-            </div>
-            <div className="col-md-6">
-              <TextInputWithLabel
-                label="Suhu"
-                value={suhu}
-                name="suhu"
-                placeholder="Suhu"
-                type="text"
-                handleChange={this.handleChange}
-              />
-            </div>
-          </div>
+            )
+          }
         <button type="submit" className="btn btn-primary">Submit</button>
           </form>
         </div>
