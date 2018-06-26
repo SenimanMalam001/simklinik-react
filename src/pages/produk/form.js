@@ -13,7 +13,8 @@ const Form = (props) => {
     nama,
     harga_jual_1,
     harga_jual_2,
-    harga_jual_3
+    harga_jual_3,
+    harga_jual_4
   } = props
   return (
     <form onSubmit={ handleSubmit}>
@@ -78,6 +79,14 @@ const Form = (props) => {
         placeholder="Harga Jual 3"
         name="harga_jual_3"
         value={harga_jual_3}
+        handleChange={handleChange}
+      />
+      <TextInputWithLabel
+        type="text"
+        label="Harga Jual 4"
+        placeholder="Harga Jual 4"
+        name="harga_jual_4"
+        value={harga_jual_4}
         handleChange={handleChange}
       />
       <button type="submit" className="btn btn-primary">Submit</button>

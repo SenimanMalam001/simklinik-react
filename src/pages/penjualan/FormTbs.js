@@ -110,7 +110,8 @@ class FormTbs  extends React.Component {
         target: {name: 'produk', value: produk.id},
         harga_jual_1: produk.harga_jual_1,
         harga_jual_2: produk.harga_jual_2,
-        harga_jual_3: produk.harga_jual_3
+        harga_jual_3: produk.harga_jual_3,
+        harga_jual_4: produk.harga_jual_4
       }
     })
     return (

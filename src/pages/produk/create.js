@@ -14,6 +14,7 @@ class ProdukCreate extends React.Component {
       harga_jual_1: '0',
       harga_jual_2: '0',
       harga_jual_3: '0',
+      harga_jual_4: '0',
       nama: '',
       kode: '',
       tipe: '',
@@ -94,7 +95,7 @@ class ProdukCreate extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3} = this.state
+    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
@@ -106,6 +107,7 @@ class ProdukCreate extends React.Component {
         harga_jual_1,
         harga_jual_2,
         harga_jual_3,
+        harga_jual_4,
         harga_beli,
         kode,
         nama,
@@ -127,7 +129,7 @@ class ProdukCreate extends React.Component {
   }
 
   render() {
-    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3} = this.state
+    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
@@ -146,6 +148,7 @@ class ProdukCreate extends React.Component {
             harga_jual_1={harga_jual_1}
             harga_jual_2={harga_jual_2}
             harga_jual_3={harga_jual_3}
+            harga_jual_4={harga_jual_4}
             kode={kode}
             nama={nama}
             tipe={tipe}

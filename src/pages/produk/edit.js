@@ -14,6 +14,7 @@ class PenjaminEdit extends React.Component {
       harga_jual_1: '0',
       harga_jual_2: '0',
       harga_jual_3: '0',
+      harga_jual_4: '0',
       nama: '',
       kode: '',
       tipe: '',
@@ -89,7 +90,7 @@ class PenjaminEdit extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3} = this.state
+    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
     const { id } = this.props.match.params
     if (this.validate()) {
       const token = localStorage.token
@@ -102,6 +103,7 @@ class PenjaminEdit extends React.Component {
         harga_jual_1,
         harga_jual_2,
         harga_jual_3,
+        harga_jual_4,
         harga_beli,
         kode,
         nama,
@@ -124,7 +126,7 @@ class PenjaminEdit extends React.Component {
       otoritas: 'get_produk'
     }
     axios.get(`/produk/${id}`, { headers}).then((res) => {
-      const { harga_beli, nama, kode, tipe, harga_jual_1, harga_jual_2, harga_jual_3 } = res.data.data
+      const { harga_beli, nama, kode, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4 } = res.data.data
       this.setState({
         harga_beli,
         nama,
@@ -132,7 +134,8 @@ class PenjaminEdit extends React.Component {
         tipe,
         harga_jual_1,
         harga_jual_2,
-        harga_jual_3
+        harga_jual_3,
+        harga_jual_4
       })
     }).catch((err) => {
       console.log(err);
@@ -144,7 +147,7 @@ class PenjaminEdit extends React.Component {
   }
 
   render() {
-    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3} = this.state
+    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
 
@@ -167,6 +170,7 @@ class PenjaminEdit extends React.Component {
             harga_jual_1={harga_jual_1}
             harga_jual_2={harga_jual_2}
             harga_jual_3={harga_jual_3}
+            harga_jual_4={harga_jual_4}
           />
         </div>
         <AlertSuccess

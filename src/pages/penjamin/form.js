@@ -54,6 +54,9 @@ const Form = (props) => {
         {
         value: '3', label:'Level 3'
         },
+        {
+        value: '4', label:'Level 4'
+        },
       ]}
     />
       <button type="submit" className="btn btn-primary">Submit</button>
