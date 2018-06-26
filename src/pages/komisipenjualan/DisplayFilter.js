@@ -1,4 +1,5 @@
 import React from 'react';
+import Currency from 'react-currency-format';
 
 
 class DisplayFilter extends React.Component {
@@ -36,6 +37,7 @@ class DisplayFilter extends React.Component {
         rekapans.push(rekap)
       })
     }
+    let total_seluruh_komisi = 0
     return (
       <table>
         <thead>
@@ -53,28 +55,76 @@ class DisplayFilter extends React.Component {
         <tbody>
           {
             jenis != 'Rekap' ? data.map((data, index) => {
+              total_seluruh_komisi += data.total_komisi
               return (
                 <tr key={index}>
                   <td>{data.no_trans} </td>
                   <td>{data.user} </td>
                   <td>{data.produk} </td>
-                  <td>{data.jumlah} </td>
-                  <td>{data.nilai_komisi} </td>
-                  <td>{data.total_komisi} </td>
+                  <td>
+                    <Currency
+                      value={data.jumlah}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
+                  <td>
+                    <Currency
+                      value={data.nilai_komisi}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
+                  <td>
+                    <Currency
+                      value={data.total_komisi}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
                 </tr>
               )
             }) : rekapans.map((data, index) => {
+              total_seluruh_komisi += data.total_komisi
               return (
                 <tr key={index}>
                   <td>{data.user} </td>
                   <td>{data.produk} </td>
-                  <td>{data.jumlah} </td>
-                  <td>{data.nilai_komisi} </td>
-                  <td>{data.total_komisi} </td>
+                  <td>
+                    <Currency
+                      value={data.jumlah}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
+                  <td>
+                    <Currency
+                      value={data.nilai_komisi}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
+                  <td>
+                    <Currency
+                      value={data.total_komisi}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                     />
+                  </td>
                 </tr>
               )
             })
           }
+          <tr>
+            <td colSpan="4"><b>Grand Total Komisi:</b> </td>
+            <td>
+              <Currency
+                value={total_seluruh_komisi}
+                displayType={'text'}
+                thousandSeparator={true}
+               />
+            </td>
+          </tr>
         </tbody>
       </table>
     )
