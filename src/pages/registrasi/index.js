@@ -57,7 +57,6 @@ class Registrasi extends React.Component {
           data={registrasi.filter(data => data.status_registrasi == 0)}
           thead={['No RM','Nama','Dokter','Poli','Antrian','Aksi']}
           tbody={['no_rm','nama','dokter','poli','no_antrian']}
-          editUrl="/registrasi/edit"
           pages={pages}
           handlePageClick={this.handlePageClick}
           deleteAction={(id) => {

@@ -30,6 +30,10 @@ class Print extends React.Component {
               <td>No Penjualan</td>
               <td>: { penjualan.no_trans}</td>
             </tr>
+            <tr>
+              <td>Petugas Kasir</td>
+              <td>: { penjualan.petugas}</td>
+            </tr>
           </table>
         =========================
           <table>
@@ -90,7 +94,7 @@ class Print extends React.Component {
             </tr>
           </table>
         ========================= <br />
-          Tanggal: { moment(penjualan.createdAt).format('DD-MM-YYYY') } <br/>
+          Tanggal: { moment(penjualan.createdAt).format('DD-MM-YYYY, h:mm:ss') } <br/>
           Terima Kasih <br/>
           Semoga Lekas Sembuh
         </div>
