@@ -132,7 +132,7 @@ class FormTbs  extends React.Component {
               }
             }}
             options={produks}
-            wrapperStyle={{ width: '15%'}}
+            wrapperStyle={{ width: '30%'}}
             ref={(ref) => { this.select = ref; }}
           />
           <input
