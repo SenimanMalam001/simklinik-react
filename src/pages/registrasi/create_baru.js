@@ -314,14 +314,18 @@ class RegistrasiCreate extends React.Component {
             type="text"
             handleChange={this.handleChange}
           />
-          <TextInputWithLabel
-            label="Alergi Pasien"
-            value={alergi}
-            name="alergi"
-            placeholder="Alergi Pasien"
-            type="text"
-            handleChange={this.handleChange}
-          />
+        {
+          jenis_registrasi !== 'apotek' && (
+            <TextInputWithLabel
+              label="Alergi Pasien"
+              value={alergi}
+              name="alergi"
+              placeholder="Alergi Pasien"
+              type="text"
+              handleChange={this.handleChange}
+            />
+          )
+        }
         {
           jenis_registrasi !== 'apotek' && (
             <div className="row">

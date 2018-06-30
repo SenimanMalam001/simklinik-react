@@ -271,14 +271,18 @@ class RegistrasiCreate extends React.Component {
               type="text"
               readOnly={true}
             />
-            <TextInputWithLabel
-              label="Alergi"
-              value={pasien_registrasi ? `${pasien_registrasi.alergi}`: ''}
-              name="alergi"
-              placeholder="Alergi"
-              type="text"
-              readOnly={true}
-            />
+          {
+            jenis_registrasi !== 'apotek' && (
+              <TextInputWithLabel
+                label="Alergi"
+                value={pasien_registrasi ? `${pasien_registrasi.alergi}`: ''}
+                name="alergi"
+                placeholder="Alergi"
+                type="text"
+                readOnly={true}
+              />
+            )
+          }
           {
             jenis_registrasi !== 'apotek' && (
               <div className="row">
