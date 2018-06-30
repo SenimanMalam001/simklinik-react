@@ -56,20 +56,8 @@ class StokAwal extends React.Component {
           data={stok_awals}
           thead={['No Trans','Produk','Jumlah','Aksi']}
           tbody={['no_trans','produk','jumlah',]}
-          editUrl="/stok-awal/edit"
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_stok_awal'
-            }
-            axios.delete(`/stok-awal/${id}`, { headers }).then((res) => {
-              this.props.setStokAwal()
-            }).catch(err => console.log(err))
-
-          }}
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>
