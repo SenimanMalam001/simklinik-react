@@ -18,6 +18,7 @@ class PenjaminEdit extends React.Component {
       nama: '',
       kode: '',
       tipe: '',
+      satuan: '',
       error: {
         status: false,
         message: ''
@@ -90,7 +91,7 @@ class PenjaminEdit extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
+    const { satuan, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
     const { id } = this.props.match.params
     if (this.validate()) {
       const token = localStorage.token
@@ -107,7 +108,8 @@ class PenjaminEdit extends React.Component {
         harga_beli,
         kode,
         nama,
-        tipe
+        tipe,
+        satuan
       },{ headers }).then((res) => {
         this.setState({swalSuccess: true})
         this.props.history.push('/produk')
@@ -126,7 +128,7 @@ class PenjaminEdit extends React.Component {
       otoritas: 'get_produk'
     }
     axios.get(`/produk/${id}`, { headers}).then((res) => {
-      const { harga_beli, nama, kode, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4 } = res.data.data
+      const { harga_beli, nama, kode, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4, satuan } = res.data.data
       this.setState({
         harga_beli,
         nama,
@@ -135,7 +137,8 @@ class PenjaminEdit extends React.Component {
         harga_jual_1,
         harga_jual_2,
         harga_jual_3,
-        harga_jual_4
+        harga_jual_4,
+        satuan
       })
     }).catch((err) => {
       console.log(err);
@@ -147,7 +150,7 @@ class PenjaminEdit extends React.Component {
   }
 
   render() {
-    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
+    const { error, satuan,harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
 
@@ -166,6 +169,7 @@ class PenjaminEdit extends React.Component {
             harga_beli={harga_beli}
             nama={nama}
             tipe={tipe}
+            satuan={satuan}
             kode={kode}
             harga_jual_1={harga_jual_1}
             harga_jual_2={harga_jual_2}

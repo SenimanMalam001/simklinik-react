@@ -14,7 +14,8 @@ const Form = (props) => {
     harga_jual_1,
     harga_jual_2,
     harga_jual_3,
-    harga_jual_4
+    harga_jual_4,
+    satuan
   } = props
   return (
     <form onSubmit={ handleSubmit}>
@@ -39,13 +40,67 @@ const Form = (props) => {
         placeholder="Pilih Tipe Produk"
         value={tipe}
         name={tipe}
-        handleChange={handleChange}
+        handleChange={(e) => {
+          if (e) {
+            handleChange(e)
+          } else {
+            handleChange({ target: { name: 'tipe', value: ''}})
+          }
+        }}
         options={[
           {
-          value: 'barang', label:'Barang'
+          value: 'barang', label:'Barang', target: { name: 'tipe', value: 'barang'}
           },
           {
-          value: 'jasa', label:'Jasa'
+          value: 'jasa', label:'Jasa', target: { name: 'tipe', value: 'jasa'}
+          },
+        ]}
+      />
+      <SelectBox
+        label="Satuan"
+        placeholder="Pilih Satuan Produk"
+        value={satuan}
+        name={satuan}
+        handleChange={(e) => {
+          if (e) {
+            handleChange(e)
+          } else {
+            handleChange({ target: { name: 'satuan', value: ''}})
+          }
+        }}
+        options={[
+          {
+          value: 'Pcs', label:'Pcs', target: { name: 'satuan', value: 'Pcs'}
+          },
+          {
+          value: 'Tablet', label:'Tablet', target: { name: 'satuan', value: 'Tablet'}
+          },
+          {
+          value: 'Botol', label:'Botol', target: { name: 'satuan', value: 'Botol'}
+          },
+          {
+          value: 'Tube', label:'Tube', target: { name: 'satuan', value: 'Tube'}
+          },
+          {
+          value: 'Sachet', label:'Sachet', target: { name: 'satuan', value: 'Sachet'}
+          },
+          {
+          value: 'Strip', label:'Strip', target: { name: 'satuan', value: 'Strip'}
+          },
+          {
+          value: 'Gelas', label:'Gelas', target: { name: 'satuan', value: 'Gelas'}
+          },
+          {
+          value: 'Pack', label:'Pack', target: { name: 'satuan', value: 'Pack'}
+          },
+          {
+          value: 'Box', label:'Box', target: { name: 'satuan', value: 'Box'}
+          },
+          {
+          value: 'Capsul', label:'Capsul', target: { name: 'satuan', value: 'Capsul'}
+          },
+          {
+          value: 'Kaplet', label:'Kaplet', target: { name: 'satuan', value: 'Kaplet'}
           },
         ]}
       />

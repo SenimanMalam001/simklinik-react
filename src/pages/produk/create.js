@@ -18,6 +18,7 @@ class ProdukCreate extends React.Component {
       nama: '',
       kode: '',
       tipe: '',
+      satuan: '',
       error: {
         status: false,
         message: ''
@@ -27,11 +28,7 @@ class ProdukCreate extends React.Component {
   }
 
   handleChange = (e) => {
-    if (e.value) {
-      this.setState({tipe: e.value})
-    } else {
       this.setState({[e.target.name]: e.target.value})
-    }
   }
 
   validate = () => {
@@ -95,7 +92,7 @@ class ProdukCreate extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
+    const { satuan, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3,harga_jual_4} = this.state
     if (this.validate()) {
       const token = localStorage.token
       const headers = {
@@ -111,7 +108,8 @@ class ProdukCreate extends React.Component {
         harga_beli,
         kode,
         nama,
-        tipe
+        tipe,
+        satuan
       },{ headers }).then((res) => {
         this.setState({ swalSuccess: true})
         this.props.history.push('/produk')
@@ -129,7 +127,7 @@ class ProdukCreate extends React.Component {
   }
 
   render() {
-    const { error, harga_beli, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
+    const { error, harga_beli, satuan, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
@@ -152,6 +150,7 @@ class ProdukCreate extends React.Component {
             kode={kode}
             nama={nama}
             tipe={tipe}
+            satuan={satuan}
           />
         </div>
         <AlertSuccess
