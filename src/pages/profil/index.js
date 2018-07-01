@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { profil } from '../../const/access'
 
 class Profil extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setProfil()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(profil).forEach(function(key,index) {
+      if (profil[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -51,7 +73,7 @@ class Profil extends React.Component {
           data={profil}
           thead={['Nama','Alamat','No Telp','Aksi']}
           tbody={['nama','alamat','no_telp']}
-          editUrl="/profil/edit"
+          editUrl={ this.state.access.edit ? "/profil/edit": null}
           pages={pages}
           withoutPagination={true}
         />

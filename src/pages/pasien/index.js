@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { pasien } from '../../const/access'
 
 class Pasien extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPasien()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(pasien).forEach(function(key,index) {
+      if (pasien[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Pasien extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_pasien'
+    }
+    axios.delete(`/pasien/${id}`, { headers }).then((res) => {
+      this.props.setPasien()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { pasien, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Pasien extends React.Component {
         <BreadCrumb
           secondText="Pasien"
         />
-      <Link className="btn btn-primary" to="/pasien/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/pasien/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Pasien extends React.Component {
           data={pasien}
           thead={['No RM','Nama','Alamat','No Telp','Aksi']}
           tbody={['no_rm','nama','alamat','no_telp']}
-          editUrl="/pasien/edit"
+          editUrl={ this.state.access.edit ? "/pasien/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_pasien'
-            }
-            axios.delete(`/pasien/${id}`, { headers }).then((res) => {
-              this.props.setPasien()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

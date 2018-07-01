@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { itemmasuk } from '../../const/access'
 
 class ItemMasuk extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setItemMasuk()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(itemmasuk).forEach(function(key,index) {
+      if (itemmasuk[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class ItemMasuk extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_item_masuk'
+    }
+    axios.delete(`/item-masuk/${id}`, { headers }).then((res) => {
+      this.props.setItemMasuk()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { item_masuks, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class ItemMasuk extends React.Component {
         <BreadCrumb
           secondText="Item Masuk"
         />
-      <Link className="btn btn-primary" to="/item-masuk/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/item-masuk/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,11 @@ class ItemMasuk extends React.Component {
           data={item_masuks}
           thead={['No Trans','Produk','Jumlah','Keterangan','Aksi']}
           tbody={['no_trans','produk','jumlah','keterangan']}
-          editUrl="/item-masuk/edit"
+          editUrl={this.state.access.edit ?"/item-masuk/edit": null }
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_item_masuk'
-            }
-            axios.delete(`/item-masuk/${id}`, { headers }).then((res) => {
-              this.props.setItemMasuk()
-            }).catch(err => console.log(err))
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
 
-          }}
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>

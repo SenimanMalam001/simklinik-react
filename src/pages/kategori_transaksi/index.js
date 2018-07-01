@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { kategoritransaksi } from '../../const/access'
 
 class KategoriTransaksi extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setKategoriTransaksi()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(kategoritransaksi).forEach(function(key,index) {
+      if (kategoritransaksi[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class KategoriTransaksi extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_kategori_transaksi'
+    }
+    axios.delete(`/kategori-transaksi/${id}`, { headers }).then((res) => {
+      this.props.setKategoriTransaksi()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { kategori_transaksi, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class KategoriTransaksi extends React.Component {
         <BreadCrumb
           secondText="Kategori Transaksi"
         />
-        <Link className="btn btn-primary" to="/kategori-transaksi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/kategori-transaksi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class KategoriTransaksi extends React.Component {
           data={kategori_transaksi}
           thead={['Nama','Aksi']}
           tbody={['name']}
-          editUrl="/kategori-transaksi/edit"
+          editUrl={ this.state.access.edit ? "/kategori-transaksi/edit" : null }
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_kategori_transaksi'
-            }
-            axios.delete(`/kategori-transaksi/${id}`, { headers }).then((res) => {
-              this.props.setKategoriTransaksi()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

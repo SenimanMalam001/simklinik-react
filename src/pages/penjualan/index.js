@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { penjualan } from '../../const/access'
 
 class Penjualan extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPenjualan()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(penjualan).forEach(function(key,index) {
+      if (penjualan[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Penjualan extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_penjualan'
+    }
+    axios.delete(`/penjualan/${id}`, { headers }).then((res) => {
+      this.props.setPenjualan()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { penjualans, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Penjualan extends React.Component {
         <BreadCrumb
           secondText="Penjualan"
         />
-      <Link className="btn btn-primary" to="/penjualan/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/penjualan/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Penjualan extends React.Component {
           data={penjualans}
           thead={['No Trans','Penjamin','Total Akhir','Aksi']}
           tbody={['no_trans','penjamin','total_akhir']}
-          editUrl="/penjualan/edit"
+          editUrl={ this.state.access.edit ?"/penjualan/edit" : null }
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_penjualan'
-            }
-            axios.delete(`/penjualan/${id}`, { headers }).then((res) => {
-              this.props.setPenjualan()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>

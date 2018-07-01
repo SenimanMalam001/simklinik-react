@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { penjamin } from '../../const/access'
 
 class Penjamin extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPenjamin()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(penjamin).forEach(function(key,index) {
+      if (penjamin[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,18 @@ class Penjamin extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_penjamin'
+    }
+    axios.delete(`/penjamin/${id}`, { headers }).then((res) => {
+      this.props.setPenjamin()
+    }).catch(err => console.log(err))
+
+  }
+
   render() {
     const { penjamin, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +81,11 @@ class Penjamin extends React.Component {
         <BreadCrumb
           secondText="Penjamin"
         />
-      <Link className="btn btn-primary" to="/penjamin/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/penjamin/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +94,10 @@ class Penjamin extends React.Component {
           data={penjamin}
           thead={['Nama','Alamat','No Telp','Level','Aksi']}
           tbody={['nama','alamat','no_telp','level']}
-          editUrl="/penjamin/edit"
+          editUrl={ this.state.access.edit ? "/penjamin/edit" : null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_penjamin'
-            }
-            axios.delete(`/penjamin/${id}`, { headers }).then((res) => {
-              this.props.setPenjamin()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

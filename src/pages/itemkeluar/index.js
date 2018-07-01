@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { itemkeluar} from '../../const/access'
 
 class ItemKeluar extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setItemKeluar()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(itemkeluar).forEach(function(key,index) {
+      if (itemkeluar[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class ItemKeluar extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_item_keluar'
+    }
+    axios.delete(`/item-keluar/${id}`, { headers }).then((res) => {
+      this.props.setItemKeluar()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { item_keluars, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class ItemKeluar extends React.Component {
         <BreadCrumb
           secondText="Item Keluar"
         />
-      <Link className="btn btn-primary" to="/item-keluar/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/item-keluar/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class ItemKeluar extends React.Component {
           data={item_keluars}
           thead={['No Trans','Produk','Jumlah','Keterangan','Aksi']}
           tbody={['no_trans','produk','jumlah','keterangan']}
-          editUrl="/item-keluar/edit"
+          editUrl={ this.state.access.tambah ? "/item-keluar/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_item_keluar'
-            }
-            axios.delete(`/item-keluar/${id}`, { headers }).then((res) => {
-              this.props.setItemKeluar()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>

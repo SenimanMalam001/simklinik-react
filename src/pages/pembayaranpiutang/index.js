@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { pembayaranpiutang } from '../../const/access'
 
 class PembayaranPiutang extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPembayaranPiutang()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(pembayaranpiutang).forEach(function(key,index) {
+      if (pembayaranpiutang[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class PembayaranPiutang extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_pembayaran_piutang'
+    }
+    axios.delete(`/pembayaranpiutang/${id}`, { headers }).then((res) => {
+      this.props.setPembayaranPiutang()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { pembayaranpiutangs, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class PembayaranPiutang extends React.Component {
         <BreadCrumb
           secondText="Pembayaran Piutang"
         />
-      <Link className="btn btn-primary" to="/pembayaranpiutang/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/pembayaranpiutang/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -58,17 +95,7 @@ class PembayaranPiutang extends React.Component {
           tbody={['no_trans','penjamin','jumlah_bayar','interval']}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_pembayaran_piutang'
-            }
-            axios.delete(`/pembayaranpiutang/${id}`, { headers }).then((res) => {
-              this.props.setPembayaranPiutang()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null}
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>

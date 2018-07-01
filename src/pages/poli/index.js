@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { poli } from '../../const/access'
 
 class Poli extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPoli()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(poli).forEach(function(key,index) {
+      if (poli[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Poli extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_poli'
+    }
+    axios.delete(`/poli/${id}`, { headers }).then((res) => {
+      this.props.setPoli()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { poli, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Poli extends React.Component {
         <BreadCrumb
           secondText="Kategori Transaksi"
         />
-        <Link className="btn btn-primary" to="/poli/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/poli/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Poli extends React.Component {
           data={poli}
           thead={['Nama','Aksi']}
           tbody={['display_name']}
-          editUrl="/poli/edit"
+          editUrl={this.state.access.edit ? "/poli/edit": null }
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_poli'
-            }
-            axios.delete(`/poli/${id}`, { headers }).then((res) => {
-              this.props.setPoli()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

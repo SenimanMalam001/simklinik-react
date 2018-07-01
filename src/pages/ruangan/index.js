@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { ruangan } from '../../const/access'
 
 class Ruangan extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setRuangans()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(ruangan).forEach(function(key,index) {
+      if (ruangan[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Ruangan extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_user'
+    }
+    axios.delete(`/ruangan/${id}`, { headers }).then((res) => {
+      this.props.setRuangans()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { ruangan, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Ruangan extends React.Component {
         <BreadCrumb
           secondText="Ruangan"
         />
-      <Link className="btn btn-primary" to="/ruangan/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/ruangan/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Ruangan extends React.Component {
           data={ruangan}
           thead={['Kode','Nama','Jumlah','Aksi']}
           tbody={['kode','nama','jumlah']}
-          editUrl="/ruangan/edit"
+          editUrl={ this.state.access.edit ? "/ruangan/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_user'
-            }
-            axios.delete(`/ruangan/${id}`, { headers }).then((res) => {
-              this.props.setRuangans()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

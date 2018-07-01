@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { petugas } from '../../const/access'
 
 class Petugas extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPetugas()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(petugas).forEach(function(key,index) {
+      if (petugas[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Petugas extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_petugas'
+    }
+    axios.delete(`/petugas/${id}`, { headers }).then((res) => {
+      this.props.setPetugas()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { petugas, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Petugas extends React.Component {
         <BreadCrumb
           secondText="Petugas"
         />
-      <Link className="btn btn-primary" to="/petugas/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/petugas/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Petugas extends React.Component {
           data={petugas}
           thead={['Petugas','Aksi']}
           tbody={['user']}
-          editUrl="/petugas/edit"
+          editUrl={ this.state.access.edit ? "/petugas/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_petugas'
-            }
-            axios.delete(`/petugas/${id}`, { headers }).then((res) => {
-              this.props.setPetugas()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

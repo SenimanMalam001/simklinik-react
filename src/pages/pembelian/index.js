@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { pembelian } from '../../const/access'
 
 class Pembelian extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setPembelian()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(pembelian).forEach(function(key,index) {
+      if (pembelian[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Pembelian extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_pembelian'
+    }
+    axios.delete(`/pembelian/${id}`, { headers }).then((res) => {
+      this.props.setPembelian()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { pembelians, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Pembelian extends React.Component {
         <BreadCrumb
           secondText="Pembelian"
         />
-      <Link className="btn btn-primary" to="/pembelian/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/pembelian/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Pembelian extends React.Component {
           data={pembelians}
           thead={['No Trans','Supplier','Total Akhir','Aksi']}
           tbody={['no_trans','supplier','total_akhir']}
-          editUrl="/pembelian/edit"
+          editUrl={this.state.access.edit ?"/pembelian/edit": null }
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_pembelian'
-            }
-            axios.delete(`/pembelian/${id}`, { headers }).then((res) => {
-              this.props.setPembelian()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>

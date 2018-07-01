@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { produk } from '../../const/access'
 
 class Produk extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setProduk()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(produk).forEach(function(key,index) {
+      if (produk[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Produk extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_produk'
+    }
+    axios.delete(`/produk/${id}`, { headers }).then((res) => {
+      this.props.setProduk()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { produk, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Produk extends React.Component {
         <BreadCrumb
           secondText="Produk"
         />
-      <Link className="btn btn-primary" to="/produk/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/produk/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Produk extends React.Component {
           data={produk}
           thead={['Kode', 'Nama','Tipe','Harga Beli','Harga Jual','Aksi']}
           tbody={['kode','nama','tipe','harga_beli','harga_jual_1']}
-          editUrl="/produk/edit"
+          editUrl={ this.state.access.edit ? "/produk/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_produk'
-            }
-            axios.delete(`/produk/${id}`, { headers }).then((res) => {
-              this.props.setProduk()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <center>
           <BarLoader

@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { komisi } from '../../const/access'
 
 class Komisi extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setKomisi()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(komisi).forEach(function(key,index) {
+      if (komisi[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +61,17 @@ class Komisi extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_user'
+    }
+    axios.delete(`/komisi/${id}`, { headers }).then((res) => {
+      this.props.setKomisi()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { komisi, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +80,11 @@ class Komisi extends React.Component {
         <BreadCrumb
           secondText="Komisi"
         />
-      <Link className="btn btn-primary" to="/komisi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+          <Link className="btn btn-primary" to="/komisi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +93,10 @@ class Komisi extends React.Component {
           data={komisi}
           thead={['User','Produk','Komisi','Aksi']}
           tbody={['user','produk','jumlah']}
-          editUrl="/komisi/edit"
+          editUrl={ this.state.access.edit ? "/komisi/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_user'
-            }
-            axios.delete(`/komisi/${id}`, { headers }).then((res) => {
-              this.props.setKomisi()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap nama produk. </p>
         <center>

@@ -11,6 +11,7 @@ import { BarLoader } from 'react-spinners';
 import Print from './print'
 import ReactToPrint from "react-to-print";
 import Modal from 'react-modal';
+import { stokopname } from '../../const/access'
 
 class StokOpname extends React.Component {
   constructor() {
@@ -21,11 +22,32 @@ class StokOpname extends React.Component {
       dari_tanggal: '',
       sampai_tanggal: '',
       print: false,
-      stokOpnameFilter: []
+      stokOpnameFilter: [],
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setStokOpname()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(stokopname).forEach(function(key,index) {
+      if (stokopname[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -64,6 +86,17 @@ class StokOpname extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_stok_opname'
+    }
+    axios.delete(`/stok-opname/${id}`, { headers }).then((res) => {
+      this.props.setStokOpname()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { stok_opnames, pages, loading } = this.props
     const { query, dari_tanggal, sampai_tanggal, stokOpnameFilter } = this.state
@@ -98,17 +131,7 @@ class StokOpname extends React.Component {
           tbody={['no_trans','produk','stok_komputer','stok_akhir','selisih','nilai_selisih']}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_stok_opname'
-            }
-            axios.delete(`/stok-opname/${id}`, { headers }).then((res) => {
-              this.props.setStokOpname()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <p>*Nilai sama dengan selisih di kali harga beli produk. </p>
