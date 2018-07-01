@@ -8,17 +8,38 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { rekammedik } from '../../const/access'
 
 class RekamMedik extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setRekamMedik()
+    this.checkAccess()
+  }
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(rekammedik).forEach(function(key,index) {
+      if (rekammedik[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,6 +60,17 @@ class RekamMedik extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_rekam_medik'
+    }
+    axios.delete(`/rekammedik/${id}`, { headers }).then((res) => {
+      this.props.setRekamMedik()
+    }).catch(err => console.log(err))
+  }
+
   render() {
     const { rekammedik, pages, loading } = this.props
     const { query } = this.state
@@ -47,7 +79,11 @@ class RekamMedik extends React.Component {
         <BreadCrumb
           secondText="Rekam Medik"
         />
-      <Link className="btn btn-primary" to="/rekammedik/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+      {
+        this.state.access.tambah && (
+        <Link className="btn btn-primary" to="/rekammedik/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -56,20 +92,10 @@ class RekamMedik extends React.Component {
           data={rekammedik}
           thead={['No Reg','No RM','Nama','Jenis','Aksi']}
           tbody={['no_reg','no_rm','nama','jenis']}
-          editUrl="/rekammedik/edit"
+          editUrl={ this.state.access.edit ? "/rekammedik/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_rekam_medik'
-            }
-            axios.delete(`/rekammedik/${id}`, { headers }).then((res) => {
-              this.props.setRekamMedik()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id): null}
         />
       <p>*Pencarian Berdasarkan No RM Pasien</p>
         <center>
