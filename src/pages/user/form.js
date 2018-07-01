@@ -45,16 +45,22 @@ const Form = (props) => {
         value={role}
         options={[
           {
-          value: 'dokter', label:'Dokter'
-          },
-          {
-          value: 'paramedik', label:'Paramedik'
-          },
-          {
           value: 'farmasi', label:'Farmasi'
           },
           {
-          value: 'non_medis', label:'Non Medis'
+          value: 'paramedis', label:'Paramedis'
+          },
+          {
+          value: 'keuangan', label:'Keuangan'
+          },
+          {
+          value: 'kasir', label:'Kasir'
+          },
+          {
+          value: 'admin', label:'Admin'
+          },
+          {
+          value: 'super_admin', label:'Super Admin'
           },
         ]}
         handleChange={handleChange}

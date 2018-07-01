@@ -53,6 +53,7 @@ class Login extends Component  {
     if (this.validate()) {
       axios.post('/users/signin',{username, password}).then((res) => {
         localStorage.setItem("token",res.data.data.token)
+        localStorage.setItem("role",res.data.data.role)
         this.props.setToken(res.data.data.token)
         this.props.history.push('/')
       }).catch((err) => {

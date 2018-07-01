@@ -1,14 +1,46 @@
 import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import NavAccess from './NavAccess'
+import {
+  registrasi,
+  rekammedik,
+  penjualan,
+  pembayaranhutang,
+  pembayaranpiutang,
+  komisipenjualan,
+  kaskeluarmasuk,
+  kasmutasi,
+  aruskas,
+  pembelian,
+  itemmasuk,
+  itemkeluar,
+  stokawal,
+  stokopname,
+  kartustok,
+  user,
+  kas,
+  poli,
+  komisi,
+  ruangan,
+  penjamin,
+  supplier,
+  produk,
+  pasien,
+  kategoritransaksi,
+  petugas,
+  profil
+} from '../const/access'
 
 class Navbar extends Component {
   constructor() {
     super()
   }
 
+
   render() {
     const token = localStorage.token
+    const role = localStorage.role
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">SimKlinik</a>
@@ -21,21 +53,41 @@ class Navbar extends Component {
               <Link to="/" className="nav-link">Home</Link>
             </li>
             <li className="nav-item active">
-              <Link to="/registrasi" className="nav-link">Registrasi</Link>
+              <NavAccess
+                to="registrasi"
+                label="Registrasi"
+                role={role}
+                roles={registrasi.lihat} />
             </li>
             <li className="nav-item active">
-              <Link to="/rekammedik" className="nav-link">Rekam Medik</Link>
+              <NavAccess
+                to="rekammedik"
+                label="Rekam Medik"
+                role={role}
+                roles={rekammedik.lihat} />
             </li>
             <li className="nav-item active">
-              <Link to="/penjualan" className="nav-link">Penjualan</Link>
+              <NavAccess
+                to="penjualan"
+                label="Penjualan"
+                role={role}
+                roles={penjualan.lihat} />
             </li>
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Pembayaran
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/pembayaranpiutang">Pembayaran Piutang</Link>
-                <Link className="dropdown-item" to="/pembayaranhutang">Pembayaran Hutang</Link>
+                <NavAccess
+                  to="pembayaranpiutang"
+                  label="Pembayaran Piutang"
+                  role={role}
+                  roles={pembayaranpiutang.lihat} />
+                <NavAccess
+                  to="pembayaranhutang"
+                  label="Pembayaran Hutang"
+                  role={role}
+                  roles={pembayaranhutang.lihat} />
               </div>
             </li>
             <li className="nav-item dropdown">
@@ -43,7 +95,11 @@ class Navbar extends Component {
                 Laporan
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/komisipenjualan">Komisi Penjualan</Link>
+                <NavAccess
+                  to="komisipenjualan"
+                  label="Komisi Penjualan"
+                  role={role}
+                  roles={komisipenjualan.lihat} />
               </div>
             </li>
             <li className="nav-item dropdown">
@@ -51,9 +107,21 @@ class Navbar extends Component {
                 Kas
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/kas-manual">Kas Masuk / Keluar</Link>
-                <Link className="dropdown-item" to="/kas-mutasi">Kas Mutasi</Link>
-                <Link className="dropdown-item" to="/transaksikas">Arus Kas</Link>
+                <NavAccess
+                  to="kas-manual"
+                  label="Kas Masuk / Keluar"
+                  role={role}
+                  roles={kaskeluarmasuk.lihat} />
+                <NavAccess
+                  to="kas-mutasi"
+                  label="Kas Mutasi"
+                  role={role}
+                  roles={kasmutasi.lihat} />
+                <NavAccess
+                  to="transaksikas"
+                  label="Arus Kas"
+                  role={role}
+                  roles={aruskas.lihat} />
               </div>
             </li>
             <li className="nav-item dropdown">
@@ -61,12 +129,36 @@ class Navbar extends Component {
                 Persediaan
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/pembelian">Pembelian</Link>
-                <Link className="dropdown-item" to="/item-masuk">Item Masuk</Link>
-                <Link className="dropdown-item" to="/item-keluar">Item Keluar</Link>
-                <Link className="dropdown-item" to="/stok-awal">Stok Awal</Link>
-                <Link className="dropdown-item" to="/stok-opname">Stok Opname</Link>
-                <Link className="dropdown-item" to="/persediaan">Kartu Stok</Link>
+                <NavAccess
+                  to="pembelian"
+                  label="Pembelian"
+                  role={role}
+                  roles={pembelian.lihat} />
+                <NavAccess
+                  to="item-masuk"
+                  label="Item Masuk"
+                  role={role}
+                  roles={itemmasuk.lihat} />
+                <NavAccess
+                  to="item-keluar"
+                  label="Item Keluar"
+                  role={role}
+                  roles={itemkeluar.lihat} />
+                <NavAccess
+                  to="stok-awal"
+                  label="Stok Awal"
+                  role={role}
+                  roles={stokawal.lihat} />
+                <NavAccess
+                  to="stok-opname"
+                  label="Stok Opname"
+                  role={role}
+                  roles={stokopname.lihat} />
+                <NavAccess
+                  to="persediaan"
+                  label="Kartu Stok"
+                  role={role}
+                  roles={kartustok.lihat} />
               </div>
             </li>
             <li className="nav-item dropdown">
@@ -74,18 +166,66 @@ class Navbar extends Component {
                 Master Data
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/user">User</Link>
-                <Link className="dropdown-item" to="/kas">Kas</Link>
-                <Link className="dropdown-item" to="/poli">Poli</Link>
-                <Link className="dropdown-item" to="/komisi">Komisi</Link>
-                <Link className="dropdown-item" to="/ruangan">Ruangan</Link>
-                <Link className="dropdown-item" to="/penjamin">Penjamin</Link>
-                <Link className="dropdown-item" to="/supplier">Supplier</Link>
-                <Link className="dropdown-item" to="/produk">Produk</Link>
-                <Link className="dropdown-item" to="/pasien">Pasien</Link>
-                <Link className="dropdown-item" to="/kategori-transaksi">Kategori Transaksi</Link>
-                <Link className="dropdown-item" to="/petugas">Petugas</Link>
-                <Link className="dropdown-item" to="/profil">Profil</Link>
+                <NavAccess
+                  to="user"
+                  label="User"
+                  role={role}
+                  roles={user.lihat} />
+                <NavAccess
+                  to="kas"
+                  label="Kas"
+                  role={role}
+                  roles={kas.lihat} />
+                <NavAccess
+                  to="poli"
+                  label="Poli"
+                  role={role}
+                  roles={poli.lihat} />
+                <NavAccess
+                  to="komisi"
+                  label="Komisi"
+                  role={role}
+                  roles={komisi.lihat} />
+                <NavAccess
+                  to="ruangan"
+                  label="Ruangan"
+                  role={role}
+                  roles={ruangan.lihat} />
+                <NavAccess
+                  to="penjamin"
+                  label="Penjamin"
+                  role={role}
+                  roles={penjamin.lihat} />
+                <NavAccess
+                  to="supplier"
+                  label="Supplier"
+                  role={role}
+                  roles={supplier.lihat} />
+                <NavAccess
+                  to="produk"
+                  label="Produk"
+                  role={role}
+                  roles={produk.lihat} />
+                <NavAccess
+                  to="pasien"
+                  label="Pasien"
+                  role={role}
+                  roles={pasien.lihat} />
+                <NavAccess
+                  to="kategori-transaksi"
+                  label="Kategori Transaksi"
+                  role={role}
+                  roles={kategoritransaksi.lihat} />
+                <NavAccess
+                  to="petugas"
+                  label="Petugas"
+                  role={role}
+                  roles={petugas.lihat} />
+                <NavAccess
+                  to="profil"
+                  label="Profil"
+                  role={role}
+                  roles={profil.lihat} />
               </div>
             </li>
             {
