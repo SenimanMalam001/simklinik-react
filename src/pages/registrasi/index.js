@@ -8,17 +8,39 @@ import axios from '../../axios'
 import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
+import { registrasi } from '../../const/access'
 
 class Registrasi extends React.Component {
   constructor() {
     super()
     this.state = {
       query: '',
-      isSearch: false
+      isSearch: false,
+      access: {
+        tambah: false,
+        edit: false,
+        hapus: false
+      }
     }
   }
   componentDidMount() {
     this.props.setRegistrasi()
+    this.checkAccess()
+  }
+
+  checkAccess = () => {
+    const role = localStorage.role
+    const access = {
+      tambah: false,
+      edit: false,
+      hapus: false
+    }
+    Object.keys(registrasi).forEach(function(key,index) {
+      if (registrasi[key].indexOf(role) >= 0) {
+        access[key] = true
+      }
+    });
+    this.setState({access})
   }
 
   handleChange = (e) => {
@@ -39,16 +61,35 @@ class Registrasi extends React.Component {
 
   }
 
+  handleDelete = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'delete_registrasi'
+    }
+    axios.delete(`/registrasi/${id}`, { headers }).then((res) => {
+      this.props.setRegistrasi()
+    }).catch(err => console.log(err))
+
+  }
+
   render() {
     const { registrasi, pages, loading } = this.props
     const { query } = this.state
+
     return (
       <div className="container">
         <BreadCrumb
           secondText="Registrasi"
         />
-      <Link className="btn btn-primary" to="/registrasi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Pasien Lama</Link>
-      <Link className="btn btn-primary" to="/registrasi/create/baru" style={{ marginBottom: 10, marginLeft: 10}} ><i className="fas fa-plus"></i> Pasien Baru</Link>
+      {
+        this.state.access.tambah && (
+          <div>
+            <Link className="btn btn-primary" to="/registrasi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Pasien Lama</Link>
+            <Link className="btn btn-primary" to="/registrasi/create/baru" style={{ marginBottom: 10, marginLeft: 10}} ><i className="fas fa-plus"></i> Pasien Baru</Link>
+          </div>
+        )
+      }
         <SearchInput
           query={query}
           handleChange={this.handleChange}
@@ -59,17 +100,7 @@ class Registrasi extends React.Component {
           tbody={['no_rm','nama','dokter','poli','no_antrian']}
           pages={pages}
           handlePageClick={this.handlePageClick}
-          deleteAction={(id) => {
-            const token = localStorage.token
-            const headers = {
-              token,
-              otoritas: 'delete_registrasi'
-            }
-            axios.delete(`/registrasi/${id}`, { headers }).then((res) => {
-              this.props.setRegistrasi()
-            }).catch(err => console.log(err))
-
-          }}
+          deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null}
         />
         <center>
           <BarLoader
