@@ -12,7 +12,7 @@ class TbodyWithAction extends React.Component {
     }
   }
   render() {
-    const { data, display, editUrl, deleteAction } = this.props
+    const { data, display, editUrl, deleteAction, customAction } = this.props
     let { actionNotDisplay } = this.props
     return (
       <tbody>
@@ -38,6 +38,9 @@ class TbodyWithAction extends React.Component {
                 {
                   !actionNotDisplay && (
                     <td>
+                      {
+                        customAction && customAction(data.id)
+                      }
                       {
                         editUrl && <Link className="btn btn-warning" to={`${editUrl}/${data.id}`}> <i className="fas fa-edit"></i> </Link>
                       }

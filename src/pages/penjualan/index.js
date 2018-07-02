@@ -9,6 +9,19 @@ import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
 import { penjualan } from '../../const/access'
+import Modal from 'react-modal';
+import ModalDetailPenjualan from './ModalDetailPenjualan'
+
+const modalStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                  : '50%',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 class Penjualan extends React.Component {
   constructor() {
@@ -20,7 +33,9 @@ class Penjualan extends React.Component {
         tambah: false,
         edit: false,
         hapus: false
-      }
+      },
+      detail: false,
+      DetailPenjualans: []
     }
   }
   componentDidMount() {
@@ -72,6 +87,19 @@ class Penjualan extends React.Component {
     }).catch(err => console.log(err))
   }
 
+  getDetailPenjualan = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'get_penjualan'
+    }
+    axios.get(`/penjualan/${id}`, { headers}).then((res) => {
+      this.setState({DetailPenjualans: res.data.data.DetailPenjualans})
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   render() {
     const { penjualans, pages, loading } = this.props
     const { query } = this.state
@@ -96,6 +124,19 @@ class Penjualan extends React.Component {
           editUrl={ this.state.access.edit ?"/penjualan/edit" : null }
           pages={pages}
           handlePageClick={this.handlePageClick}
+          customAction={(id) => {
+            return (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  this.setState({detail: true})
+                  this.getDetailPenjualan(id)
+                }}
+              >
+                Detail
+              </button>
+            )
+          }}
           deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
@@ -106,6 +147,11 @@ class Penjualan extends React.Component {
             className="middle-center"
           />
         </center>
+        <ModalDetailPenjualan
+          show={this.state.detail}
+          closeModal={() => this.setState({detail: false})}
+          DetailPenjualans={this.state.DetailPenjualans}
+        />
       </div>
     )
   }

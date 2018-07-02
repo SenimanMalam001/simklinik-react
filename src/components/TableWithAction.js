@@ -18,7 +18,8 @@ class TableWithAction extends React.Component {
       tbody,
       editUrl,
       deleteAction,
-      pages
+      pages,
+      customAction
     } = this.props
     return (
       <div className="table-responsive">
@@ -32,6 +33,7 @@ class TableWithAction extends React.Component {
             editUrl={editUrl}
             deleteAction={deleteAction}
             actionNotDisplay={actionNotDisplay}
+            customAction={customAction}
           />
         </table>
         {
