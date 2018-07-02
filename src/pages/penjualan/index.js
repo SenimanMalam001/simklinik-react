@@ -10,6 +10,7 @@ import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
 import { penjualan } from '../../const/access'
 import ModalDetailPenjualan from './ModalDetailPenjualan'
+import ModalPrint from './ModalPrint'
 
 class Penjualan extends React.Component {
   constructor() {
@@ -23,6 +24,16 @@ class Penjualan extends React.Component {
         hapus: false
       },
       detail: false,
+      print: false,
+      penjualan: {
+        no_trans: '',
+        petugas: '',
+        subtotal: '',
+        diskon: '',
+        total_akhir: '',
+        jumlah_bayar: '',
+        createdAt: '',
+      },
       DetailPenjualans: []
     }
   }
@@ -82,7 +93,16 @@ class Penjualan extends React.Component {
       otoritas: 'get_penjualan'
     }
     axios.get(`/penjualan/${id}`, { headers}).then((res) => {
-      this.setState({DetailPenjualans: res.data.data.DetailPenjualans})
+      const penjualan = {
+        no_trans: res.data.data.no_trans,
+        petugas: res.data.data.User.name,
+        subtotal: res.data.data.subtotal,
+        diskon: res.data.data.diskon,
+        total_akhir: res.data.data.total_akhir,
+        jumlah_bayar: res.data.data.jumlah_bayar,
+        createdAt: res.data.data.createdAt,
+      }
+      this.setState({DetailPenjualans: res.data.data.DetailPenjualans, penjualan})
     }).catch((err) => {
       console.log(err);
     })
@@ -114,15 +134,26 @@ class Penjualan extends React.Component {
           handlePageClick={this.handlePageClick}
           customAction={(id) => {
             return (
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  this.setState({detail: true})
-                  this.getDetailPenjualan(id)
-                }}
-              >
-                Detail
-              </button>
+              <span>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    this.setState({detail: true})
+                    this.getDetailPenjualan(id)
+                  }}
+                >
+                  Detail
+                </button>
+                <button
+                  className="btn btn-success"
+                  onClick={() => {
+                    this.setState({print: true})
+                    this.getDetailPenjualan(id)
+                  }}
+                  >
+                  Print
+                </button>
+              </span>
             )
           }}
           deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
@@ -139,6 +170,11 @@ class Penjualan extends React.Component {
           show={this.state.detail}
           closeModal={() => this.setState({detail: false})}
           DetailPenjualans={this.state.DetailPenjualans}
+        />
+        <ModalPrint
+          show={this.state.print}
+          closeModal={() => this.setState({print: false})}
+          penjualan={this.state.penjualan}
         />
       </div>
     )
