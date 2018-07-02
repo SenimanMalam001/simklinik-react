@@ -9,19 +9,7 @@ import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
 import { penjualan } from '../../const/access'
-import Modal from 'react-modal';
 import ModalDetailPenjualan from './ModalDetailPenjualan'
-
-const modalStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                  : '50%',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
 
 class Penjualan extends React.Component {
   constructor() {

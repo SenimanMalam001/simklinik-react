@@ -9,6 +9,7 @@ import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
 import { pembelian } from '../../const/access'
+import ModalDetailPembelian from './ModalDetailPembelian'
 
 class Pembelian extends React.Component {
   constructor() {
@@ -20,7 +21,9 @@ class Pembelian extends React.Component {
         tambah: false,
         edit: false,
         hapus: false
-      }
+      },
+      detail: false,
+      DetailPembelians: []
     }
   }
   componentDidMount() {
@@ -72,6 +75,20 @@ class Pembelian extends React.Component {
     }).catch(err => console.log(err))
   }
 
+  getDetailPembelian = (id) => {
+    const token = localStorage.token
+    const headers = {
+      token,
+      otoritas: 'get_pembelian'
+    }
+    axios.get(`/pembelian/${id}`, { headers}).then((res) => {
+      console.log(res.data.data);
+      this.setState({DetailPembelians: res.data.data.DetailPembelians})
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   render() {
     const { pembelians, pages, loading } = this.props
     const { query } = this.state
@@ -97,6 +114,19 @@ class Pembelian extends React.Component {
           pages={pages}
           handlePageClick={this.handlePageClick}
           deleteAction={ this.state.access.hapus ? (id) => this.handleDelete(id) : null }
+          customAction={(id) => {
+            return (
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  this.setState({detail: true})
+                  this.getDetailPembelian(id)
+                }}
+              >
+                Detail
+              </button>
+            )
+          }}
         />
         <p>*Hanya bisa melakukan pencarian terhadap No Transaksi. </p>
         <center>
@@ -106,6 +136,11 @@ class Pembelian extends React.Component {
             className="middle-center"
           />
         </center>
+        <ModalDetailPembelian
+          show={this.state.detail}
+          closeModal={() => this.setState({detail: false})}
+          DetailPembelians={this.state.DetailPembelians}
+        />
       </div>
     )
   }

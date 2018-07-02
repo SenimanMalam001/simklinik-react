@@ -13,8 +13,8 @@ const modalStyles = {
   }
 };
 
-const ModalDetailPenjualan = (props) => {
-  const { DetailPenjualans, show, closeModal} = props
+const ModalDetailPembelian = (props) => {
+  const { DetailPembelians, show, closeModal} = props
   return (
     <Modal
       isOpen={show}
@@ -33,14 +33,14 @@ const ModalDetailPenjualan = (props) => {
         </thead>
         <tbody>
           {
-            DetailPenjualans.map((data) => {
+            DetailPembelians.map((data) => {
               return (
                 <tr>
                   <td>{ data.no_trans}</td>
                   <td>{ data.Produk.nama}</td>
                   <td>
                     <Currency
-                      value={data.harga_jual}
+                      value={data.harga_beli}
                       displayType={'text'}
                       thousandSeparator={true}
                      />
@@ -87,4 +87,4 @@ const ModalDetailPenjualan = (props) => {
 
 }
 
-export default ModalDetailPenjualan
+export default ModalDetailPembelian
