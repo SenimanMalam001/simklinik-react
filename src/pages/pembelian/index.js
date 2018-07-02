@@ -108,8 +108,8 @@ class Pembelian extends React.Component {
         />
         <Table
           data={pembelians}
-          thead={['No Trans','Supplier','Total Akhir','Aksi']}
-          tbody={['no_trans','supplier','total_akhir']}
+          thead={['No Trans','Supplier','Total Akhir','Waktu','Aksi']}
+          tbody={['no_trans','supplier','total_akhir','waktu']}
           editUrl={this.state.access.edit ?"/pembelian/edit": null }
           pages={pages}
           handlePageClick={this.handlePageClick}
