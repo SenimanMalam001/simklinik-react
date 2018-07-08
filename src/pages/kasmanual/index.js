@@ -91,8 +91,8 @@ class KasManual extends React.Component {
         />
         <Table
           data={kas_manuals}
-          thead={['No Trans', 'Jenis','Kas','Kategori','Jumlah','Keterangan','Aksi']}
-          tbody={['no_trans','jenis','kas','kategori','jumlah','keterangan']}
+          thead={['No Trans', 'Jenis','Kas','Kategori','Jumlah','Waktu','Keterangan','Aksi']}
+          tbody={['no_trans','jenis','kas','kategori','jumlah','waktu','keterangan']}
           editUrl={this.state.access.edit ? "/kas-manual/edit": null}
           pages={pages}
           handlePageClick={this.handlePageClick}

@@ -91,8 +91,8 @@ class KasMutasi extends React.Component {
         />
         <Table
           data={kas_mutasis}
-          thead={['No Trans', 'Dari Kas','Ke Kas','Jumlah','Keterangan','Aksi']}
-          tbody={['no_trans','dari_kas','ke_kas','jumlah','keterangan']}
+          thead={['No Trans', 'Dari Kas','Ke Kas','Jumlah','Waktu','Keterangan','Aksi']}
+          tbody={['no_trans','dari_kas','ke_kas','jumlah','waktu','keterangan']}
           editUrl={this.state.access.edit ?"/kas-mutasi/edit": null }
           pages={pages}
           handlePageClick={this.handlePageClick}
