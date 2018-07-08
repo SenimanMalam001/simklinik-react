@@ -37,7 +37,7 @@ class TableTbs  extends React.Component {
         <thead>
           <tr>
             <td>Produk</td>
-            <td>Harga Beli</td>
+            <td>Harga Jual</td>
             <td>Jumlah</td>
             <td>Subtotal</td>
             <td>Diskon</td>
@@ -53,7 +53,7 @@ class TableTbs  extends React.Component {
                   <td>{data.produk}</td>
                   <td>
                     <Currency
-                      value={data.harga_beli}
+                      value={data.harga_jual}
                       displayType={'text'}
                       thousandSeparator={true}
                      />
