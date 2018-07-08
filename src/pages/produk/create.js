@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from '../../axios'
 import Alert from '../../components/Alert'
-import { Redirect } from 'react-router-dom'
 import BreadCrumb from '../../components/BreadCrumb'
 import Form from './form'
 import AlertSuccess from '../../components/AlertSuccess'
+import Import from './Import'
 
 class ProdukCreate extends React.Component {
   constructor() {
@@ -23,7 +23,8 @@ class ProdukCreate extends React.Component {
         status: false,
         message: ''
       },
-      swalSuccess: false
+      swalSuccess: false,
+      importExcell: false,
     }
   }
 
@@ -127,7 +128,7 @@ class ProdukCreate extends React.Component {
   }
 
   render() {
-    const { error, harga_beli, satuan, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
+    const { error, importExcell, harga_beli, satuan, kode, nama, tipe, harga_jual_1, harga_jual_2, harga_jual_3, harga_jual_4} = this.state
     return (
       <div className="container" style={{ marginTop: '20px'}}>
         <div className="col-md-4 offset-md-4">
@@ -139,19 +140,32 @@ class ProdukCreate extends React.Component {
           {
             error.status && <Alert type="danger" text={error.message} />
           }
-          <Form
-            handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}
-            harga_beli={harga_beli}
-            harga_jual_1={harga_jual_1}
-            harga_jual_2={harga_jual_2}
-            harga_jual_3={harga_jual_3}
-            harga_jual_4={harga_jual_4}
-            kode={kode}
-            nama={nama}
-            tipe={tipe}
-            satuan={satuan}
-          />
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <a className={ !importExcell ? `nav-link active`: 'nav-link'} onClick={ ()=> this.setState({ importExcell: false})} href="#">Form</a>
+            </li>
+            <li className="nav-item">
+              <a className={ importExcell ? `nav-link active`: 'nav-link'} onClick={ ()=> this.setState({ importExcell: true})} href="#">Import</a>
+            </li>
+          </ul>
+          <br/>
+          {
+            importExcell ? (<Import />) : (
+              <Form
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                harga_beli={harga_beli}
+                harga_jual_1={harga_jual_1}
+                harga_jual_2={harga_jual_2}
+                harga_jual_3={harga_jual_3}
+                harga_jual_4={harga_jual_4}
+                kode={kode}
+                nama={nama}
+                tipe={tipe}
+                satuan={satuan}
+              />
+            )
+          }
         </div>
         <AlertSuccess
           type="create"

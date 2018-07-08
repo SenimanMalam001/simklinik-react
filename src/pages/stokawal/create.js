@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from '../../axios'
 import Alert from '../../components/Alert'
-import { Redirect } from 'react-router-dom'
 import BreadCrumb from '../../components/BreadCrumb'
 import Form from './form'
 import AlertSuccess from '../../components/AlertSuccess'

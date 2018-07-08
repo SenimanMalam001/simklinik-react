@@ -30,6 +30,7 @@ class Download extends React.Component {
                     <ExcelColumn label="Kode" value="kode" />
                     <ExcelColumn label="Nama" value="nama" />
                     <ExcelColumn label="Tipe" value="tipe" />
+                    <ExcelColumn label="Satuan" value="satuan" />
                     <ExcelColumn label="Harga Beli" value="harga_beli" />
                     <ExcelColumn label="Harga Jual 1" value="harga_jual_1" />
                     <ExcelColumn label="Harga Jual 2" value="harga_jual_2" />
