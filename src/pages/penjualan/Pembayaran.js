@@ -10,7 +10,7 @@ import {
   setAllRegistrasi ,
   setAllPetugas,
   setClearRegistrasi,
-  setPenjaminPenjualan
+  setPenjaminPenjualan,
 } from '../../store/actions'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -83,8 +83,8 @@ class Pembayaran extends React.Component {
         otoritas: 'create_penjualan'
       }
       axios.post('/penjualan', input,{ headers }).then((res) => {
-
         this.setState({ swalSuccess: true, penjualan: res.data.data})
+        this.props.setTbsPenjualan()
       }).catch((err) => {
         const message = err.response.data.message
         this.setState({
@@ -235,7 +235,19 @@ class Pembayaran extends React.Component {
             this.setState({show:true})
           }}
         />
-        <form onSubmit={ this.handleSubmit}>
+        <form onSubmit={ (e) => {
+          if (this.state.cara_bayar === '') {
+            this.setState({
+              error: {
+                status: true,
+                message: 'Cara Bayar Wajib Di Isi'
+              }
+            })
+          } else {
+            this.handleSubmit(e)
+          }
+          e.preventDefault()
+         }}>
           <label>Total Akhir </label>
           <h2>
             <Currency
@@ -328,6 +340,18 @@ class Pembayaran extends React.Component {
             this.setState({ swalSuccess: false, print: true })
           }}
         />
+        <SweetAlert
+          show={this.state.error.status}
+          title="Error"
+          type="error"
+          text={this.state.error.message}
+          onConfirm={() => {
+            this.setState({ error: {
+              status: false,
+              message: ''
+            } })
+          }}
+         />
         <HotKey
           keys={['f1']}
           onKeysCoincide={() => {
@@ -340,7 +364,16 @@ class Pembayaran extends React.Component {
       >
         <p>*Langsung Klik Submit jika tidak perlu memilih registrasi dan petugas</p>
         <form onSubmit={(e) => {
-          this.setState({show:false})
+          if (this.state.penjamin === '') {
+            this.setState({
+              error: {
+                status: true,
+                message: 'Penjamin Wajib Di Isi!'
+              }
+            })
+          } else {
+            this.setState({show:false})
+          }
           e.preventDefault()
         }}>
           <div className="form-group">
@@ -442,7 +475,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setAllRegistrasi,
     setAllPetugas,
     setClearRegistrasi,
-    setPenjaminPenjualan
+    setPenjaminPenjualan,
+    setTbsPenjualan
   },
   dispatch
 )
