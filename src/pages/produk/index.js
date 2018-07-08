@@ -9,6 +9,7 @@ import Table from '../../components/TableWithAction'
 import SearchInput from '../../components/SearchInput'
 import { BarLoader } from 'react-spinners';
 import { produk } from '../../const/access'
+import DownloadExcell from './DownloadExcell'
 
 class Produk extends React.Component {
   constructor() {
@@ -85,6 +86,7 @@ class Produk extends React.Component {
           <Link className="btn btn-primary" to="/produk/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
         )
       }
+        <DownloadExcell />
         <SearchInput
           query={query}
           handleChange={this.handleChange}
