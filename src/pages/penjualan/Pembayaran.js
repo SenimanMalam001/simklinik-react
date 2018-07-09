@@ -83,7 +83,7 @@ class Pembayaran extends React.Component {
         otoritas: 'create_penjualan'
       }
       axios.post('/penjualan', input,{ headers }).then((res) => {
-        this.setState({ swalSuccess: true, penjualan: res.data.data})
+        this.setState({ swalSuccess: true, penjualan: res.data.data, no_reg: ''})
         this.props.setTbsPenjualan()
       }).catch((err) => {
         const message = err.response.data.message
@@ -446,7 +446,7 @@ class Pembayaran extends React.Component {
         <ReactToPrint
           trigger={() => <a href="#" className="btn btn-primary"><i className="fas fa-print"></i> Print</a>}
           content={() => this.componentRef} />
-        <button onClick={() => this.setState({print: false})}  className="btn btn-danger">Close </button>
+        <button onClick={() => this.setState({print: false, show: true})}  className="btn btn-danger">Close </button>
         <Print  ref={el => (this.componentRef = el)} penjualan={this.state.penjualan} />
       </Modal>
       </div>
