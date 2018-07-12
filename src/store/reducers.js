@@ -36,7 +36,8 @@ import {
   LOADING,
   LOADING_FINISH,
   ERROR,
-  SET_KATEGORI_TRANSAKSI
+  SET_KATEGORI_TRANSAKSI,
+  SET_JENIS_LAPORAN
 } from './actionTypes'
 
 const initialState = {
@@ -77,9 +78,18 @@ const initialState = {
   kategori_transaksi: [],
   loading: false,
   error: false,
-  pages: 0
+  pages: 0,
+  jenis_laporan: ''
 }
 const reducer = (state = initialState, action) => {
+
+  if(action.type === SET_JENIS_LAPORAN) {
+    return {
+      ...state,
+      jenis_laporan: action.payload
+    }
+  }
+
   if(action.type === SET_TOKEN) {
     return {
       ...state,

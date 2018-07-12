@@ -37,7 +37,8 @@ import {
   SEARCH_USERS,
   SET_PAGES,
   SET_KATEGORI_TRANSAKSI,
-  SET_POLI
+  SET_POLI,
+  SET_JENIS_LAPORAN
 } from './actionTypes'
 import axios from '../axios'
 
@@ -281,6 +282,37 @@ export const setPembelian = (page, query) => {
       dispatch({
         type: SET_PAGES,
         payload: pages
+      })
+      dispatch(loadingFinish)
+    }).catch((err) => {
+      dispatch(loadingFinish)
+      console.log(err)
+    })
+  }
+}
+
+export const setJenisLaporan = (jenis_laporan) => {
+  return {
+    type: SET_JENIS_LAPORAN,
+    payload: jenis_laporan
+  }
+}
+
+export const setClearLaporanPenjualan = () => {
+  return {
+    type: SET_PENJUALAN,
+    payload: []
+  }
+}
+export const setLaporanPenjualan = (dari_tanggal, sampai_tanggal) => {
+  return dispatch => {
+    const token = localStorage.token
+    dispatch(loading)
+    axios.get(`/penjualan/interval?dari_tanggal=${dari_tanggal}&sampai_tanggal=${sampai_tanggal}`,{ headers: { token, otoritas: 'get_penjualan' }}).then((res) => {
+      const { data } = res.data
+      dispatch({
+        type: SET_PENJUALAN,
+        payload: data
       })
       dispatch(loadingFinish)
     }).catch((err) => {

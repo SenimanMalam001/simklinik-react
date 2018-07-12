@@ -100,6 +100,11 @@ class Navbar extends Component {
                   label="Komisi Penjualan"
                   role={role}
                   roles={komisipenjualan.lihat} />
+                <NavAccess
+                  to="laporan/penjualan"
+                  label="Penjualan"
+                  role={role}
+                  roles={penjualan.lihat} />
               </div>
             </li>
             <li className="nav-item dropdown">

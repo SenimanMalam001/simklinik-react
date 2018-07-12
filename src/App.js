@@ -67,6 +67,7 @@ import PembelianEdit from './pages/pembelian/edit'
 import Penjualan from './pages/penjualan'
 import PenjualanCreate from './pages/penjualan/create'
 import PenjualanEdit from './pages/penjualan/edit'
+import LaporanPenjualan from './pages/penjualan/Laporan'
 import Petugas from './pages/petugas'
 import PetugasCreate from './pages/petugas/create'
 import PetugasEdit from './pages/petugas/edit'
@@ -152,6 +153,7 @@ class App extends Component {
           <Route path="/penjualan" exact component={Penjualan} />
           <Route path="/penjualan/create" exact component={PenjualanCreate} />
           <Route path="/penjualan/edit/:id" exact component={PenjualanEdit} />
+          <Route path="/laporan/penjualan" exact component={LaporanPenjualan} />
           <Route path="/petugas" exact component={Petugas} />
           <Route path="/petugas/create" exact component={PetugasCreate} />
           <Route path="/petugas/edit/:id" exact component={PetugasEdit} />
