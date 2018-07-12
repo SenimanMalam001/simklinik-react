@@ -17,7 +17,7 @@ class FormFilterLaporan extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.setClearLaporanPenjualan()
     }
 
