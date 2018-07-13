@@ -22,7 +22,17 @@ class TableLaporan extends React.Component {
                 }
             })
         })
-        console.log(produks)
+        let total_jumlah = 0
+        let total_nilai_akhir = 0
+        produks.forEach(data => {
+            total_jumlah += data.jumlah
+            total_nilai_akhir += data.total_akhir
+        })
+        produks.push({
+            nama: 'Grand Total',
+            jumlah: total_jumlah,
+            total_akhir: total_nilai_akhir
+        })
         return produks
     }
 
