@@ -127,8 +127,8 @@ class Penjualan extends React.Component {
         />
         <Table
           data={penjualans}
-          thead={['No Trans','Pasien','Penjamin','Total Akhir','Waktu','Keterangan','Aksi']}
-          tbody={['no_trans','pasien','penjamin','total_akhir','waktu','keterangan']}
+          thead={['No Trans','Pasien','Penjamin','Total Akhir','Keterangan','Petugas,','Waktu','Aksi']}
+          tbody={['no_trans','pasien','penjamin','total_akhir','keterangan','petugas','waktu']}
           editUrl={ this.state.access.edit ?"/penjualan/edit" : null }
           pages={pages}
           handlePageClick={this.handlePageClick}
