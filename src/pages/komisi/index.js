@@ -98,7 +98,7 @@ class Komisi extends React.Component {
           handlePageClick={this.handlePageClick}
           deleteAction={this.state.access.hapus ? (id) => this.handleDelete(id) : null }
         />
-        <p>*Hanya bisa melakukan pencarian terhadap nama produk. </p>
+        <p>*Untuk melakukan pencarian terhadap produk, tambah kan tanda | sebelum pencariannya </p>
         <center>
           <BarLoader
             color={'#123abc'}
