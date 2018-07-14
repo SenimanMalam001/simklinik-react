@@ -57,7 +57,7 @@ class Komisi extends React.Component {
 
   handlePageClick = (data) => {
     const { selected } = data
-    this.props.setKomisi(selected + 1)
+    this.props.setKomisi(selected + 1, this.state.query)
 
   }
 
