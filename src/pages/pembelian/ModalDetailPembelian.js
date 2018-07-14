@@ -19,69 +19,73 @@ const ModalDetailPembelian = (props) => {
     <Modal
       isOpen={show}
       style={modalStyles}
+      onRequestClose={closeModal}
+      shouldCloseOnOverlayClick={true} 
+      shouldCloseOnEsc={true}
     >
       <button onClick={() => closeModal()}  className="btn btn-danger">Close </button>
-      <table className="table table-bordered">
-        <thead>
-          <th>No Trans</th>
-          <th>Produk</th>
-          <th>Harga Jual</th>
-          <th>Jumlah</th>
-          <th>Subtotal</th>
-          <th>Diskon</th>
-          <th>Total Akhir</th>
-        </thead>
-        <tbody>
-          {
-            DetailPembelians.map((data) => {
-              return (
-                <tr>
-                  <td>{ data.no_trans}</td>
-                  <td>{ data.Produk.nama}</td>
-                  <td>
-                    <Currency
-                      value={data.harga_beli}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                     />
-                  </td>
-                  <td>
-                    <Currency
-                      value={data.jumlah}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                     />
-                  </td>
-                  <td>
-                    <Currency
-                      value={data.subtotal}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                     />
-                  </td>
-                  <td>
-                    <Currency
-                      value={data.diskon}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                     />
-                  </td>
-                  <td>
-                    <Currency
-                      value={data.total_akhir}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                     />
-                  </td>
-                </tr>
-              )
+      <div className="table-responsive" >
+        <table className="table table-bordered">
+          <thead>
+            <th>No Trans</th>
+            <th>Produk</th>
+            <th>Harga Jual</th>
+            <th>Jumlah</th>
+            <th>Subtotal</th>
+            <th>Diskon</th>
+            <th>Total Akhir</th>
+          </thead>
+          <tbody>
+            {
+              DetailPembelians.map((data) => {
+                return (
+                  <tr>
+                    <td>{ data.no_trans}</td>
+                    <td>{ data.Produk.nama}</td>
+                    <td>
+                      <Currency
+                        value={data.harga_beli}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                      />
+                    </td>
+                    <td>
+                      <Currency
+                        value={data.jumlah}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                      />
+                    </td>
+                    <td>
+                      <Currency
+                        value={data.subtotal}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                      />
+                    </td>
+                    <td>
+                      <Currency
+                        value={data.diskon}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                      />
+                    </td>
+                    <td>
+                      <Currency
+                        value={data.total_akhir}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                      />
+                    </td>
+                  </tr>
+                )
 
-            })
-          }
+              })
+            }
 
-        </tbody>
-      </table>
-
+          </tbody>
+        </table>
+      </div>
     </Modal>
   )
 

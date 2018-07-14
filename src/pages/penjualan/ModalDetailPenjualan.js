@@ -19,6 +19,9 @@ const ModalDetailPenjualan = (props) => {
     <Modal
       isOpen={show}
       style={modalStyles}
+      onRequestClose={closeModal}
+      shouldCloseOnOverlayClick={true} 
+      shouldCloseOnEsc={true}
     >
       <button onClick={() => closeModal()}  className="btn btn-danger">Close </button>
       <table className="table table-bordered">
