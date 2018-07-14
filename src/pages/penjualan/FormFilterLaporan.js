@@ -59,6 +59,8 @@ class FormFilterLaporan extends React.Component {
                 }}
                 >
                 <option>Jenis Laporan</option>
+                <option>Rekap Per Penjamin</option>
+                <option>Rekap Per Jenis Registrasi</option>
                 <option>Rekap Per Jenis Produk Jasa</option>
                 <option>Rekap Per Jenis Produk Barang</option>
                 </select>
