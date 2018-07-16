@@ -82,7 +82,10 @@ class Komisi extends React.Component {
         />
       {
         this.state.access.tambah && (
+          <div>
           <Link className="btn btn-primary" to="/komisi/create" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Tambah</Link>
+          <Link className="btn btn-primary" to="/komisi/create/copy" style={{ marginBottom: 10}} ><i className="fas fa-plus"></i> Copy Komisi</Link>
+          </div>
         )
       }
         <SearchInput

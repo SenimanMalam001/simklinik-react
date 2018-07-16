@@ -33,6 +33,7 @@ import ProdukEdit from './pages/produk/edit'
 import Komisi from './pages/komisi'
 import KomisiCreate from './pages/komisi/create'
 import KomisiEdit from './pages/komisi/edit'
+import CopyKomisi from './pages/komisi/CopyForm'
 import KomisiPenjualan from './pages/komisipenjualan'
 import KomisiPenjualanCreate from './pages/komisipenjualan/create'
 import KomisiPenjualanEdit from './pages/komisipenjualan/edit'
@@ -119,6 +120,7 @@ class App extends Component {
           <Route path="/komisi" exact component={Komisi} />
           <Route path="/komisi/create" exact component={KomisiCreate} />
           <Route path="/komisi/edit/:id" exact component={KomisiEdit} />
+          <Route path="/komisi/create/copy" exact component={CopyKomisi} />
           <Route path="/komisipenjualan" exact component={KomisiPenjualan} />
           <Route path="/komisipenjualan/create" exact component={KomisiPenjualanCreate} />
           <Route path="/komisipenjualan/edit/:id" exact component={KomisiPenjualanEdit} />
